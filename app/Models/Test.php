@@ -21,7 +21,7 @@ class test extends Authenticatable
     protected $fillable = [
         'id',
         'teacher_id',
-        'title Descending',
+        'title',
         'description',
         'duration_minutes',
         'total_questions',

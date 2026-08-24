@@ -8,10 +8,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+// taste here 
 Route::get('/Test', [testcontroler::class, 'test'])->name('test');
 
-Route::post('/Test', [testcontroler::class, 'testStore'])->name('test');
+Route::post('/Test', [testcontroler::class, 'testStore'])->name('testcreate');
+
+Route::put('/Test/{id}', [testcontroler::class, 'testupdate'])->name('testupdate');
+Route::delete('/Test/{id}', [testcontroler::class, 'deleteupdate'])->name('testdelete');
  
+
 
 
 // login 
@@ -23,3 +29,13 @@ Route::post('/login', [testcontroler::class, 'summitLogin']);
 
 Route::get('/registration ', [testcontroler::class, 'registration']);
 Route::post('/registration', [testcontroler::class, 'registrationStore'])->name('register.store');
+
+
+// student  database realtion test 
+Route::get('/Question ', [testcontroler::class, 'question']);
+
+
+
+// Add  Quiz 
+
+Route::get('/Quiz ', [testcontroler::class, 'Quiz']);

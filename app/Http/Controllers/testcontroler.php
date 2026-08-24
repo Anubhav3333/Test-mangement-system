@@ -1,10 +1,13 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Test;
+use App\Models\Question;
+use App\Models\question_options;
+use Illuminate\Database\Eloquent\Model;
+
 use App\Models\users;
 
 use Illuminate\Support\Facades\Hash;
@@ -14,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 use App\Models\User;
+use GuzzleHttp\Psr7\Query;
 
 class testcontroler extends Controller
 
@@ -69,6 +73,8 @@ class testcontroler extends Controller
         $test = test::all();
         return view('test', compact('test'));
     }
+
+
     public function testpage()
     {
 
@@ -76,24 +82,45 @@ class testcontroler extends Controller
     }
 
 
-    public function testStore(Request $request)
+
+    public function testupdate(Request $request, $id)
     {
-
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-        ]);
-
-        Test::create($validated);
-
-
-        
-        return redirect()
-            ->route('login')
-            ->with('success', 'Registration successful!');
+        $find  = test::findOrFail($id);
+        $find->update($request->all());
+        return redirect()->route("test");
     }
 
 
+    public function deleteupdate(Request  $request, $id)
+    {
 
+
+        Test::destroy($id);
+
+        return redirect()->route('test')->with('success', 'Test deleted successfully');
+    }
+
+    public function testStore(Request $request)
+    {
+
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required',
+            'duration_minutes' => 'required',
+            'total_questions' => '',
+            'marks_per_question' => '',
+            'negative_marks' => '',
+            'status' => '',
+
+
+
+        ]);
+        Test::create($validated);
+        return redirect()
+            ->route('test')
+            ->with('success', 'test store successful!');
+    }
 
     public function login()
     {
@@ -126,10 +153,16 @@ class testcontroler extends Controller
     }
 
     // usertable
+    public function question()
+    {
+        $question = Question::with('question_options')->first();
+        return  view("question", compact("question"));
+    }
 
 
+    public function Quiz()
+    {
 
-
-
-
-};
+        return view('Quiz');
+    }
+}

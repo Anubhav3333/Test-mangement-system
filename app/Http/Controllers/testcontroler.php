@@ -67,14 +67,13 @@ class testcontroler extends Controller
             ->with('success', 'Registration successful!');
     }
 
+
+
     public function test()
     {
-
         $test = test::all();
         return view('test', compact('test'));
     }
-
-
     public function testpage()
     {
 
@@ -159,10 +158,33 @@ class testcontroler extends Controller
         return  view("question", compact("question"));
     }
 
-
     public function Quiz()
     {
-
-        return view('Quiz');
+        return view('quiz');
     }
+  public function Quizstore(Request $request)
+{
+    $validated = $request->validate([
+        'question_text' => 'required|string', 
+        'options'       => 'required|array|min:2',
+    ]);
+
+    $question  = Question::create([
+        'question_text' => $validated['question_text'], 
+
+    ]);
+
+    foreach ($validated['options'] as $optionText) {
+        $question->question_options()->create([
+            'option' => $optionText
+        ]);
+    }
+
+
+
+    return redirect()
+        ->route('Quiz')
+        ->with('success', 'Question  successfully!');
+}
+
 }

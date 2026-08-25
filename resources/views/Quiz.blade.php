@@ -23,41 +23,56 @@
 
   <div class="row">
     <div class="col-md-15">
-      <form action="" method="post">
+      <form action="{{ route('Quizstore') }}" method="post">
+        @csrf
         <h1> Add Quiz </h1>
 
         <fieldset>
+
           <label for="name">Question:</label>
-          <input type="text" id="name" name="user_name">
+          <input type="text" id="name" name="question_text">
 
-          <label for="text">option1:</label>
-          <input type="email" id="mail" name="user_email">
+          <form id="optionsForm">
+            <label for="option1">option1:</label>
+            <input type="text" id="option1" name="options[]">
 
-          <label for="password">option2:</label>
-          <input type="text" id="password" name="user_password">
+            <label for="option2">option2:</label>
+            <input type="text" id="option2" name="options[]">
 
-          <label for="text">option3:</label>
-          <input type="email" id="mail" name="user_email">
+            <label for="option3">option3:</label>
+            <input type="text" id="option3" name="options[]">
 
+            <label>Correct option:</label>
+            <input type="checkbox" id="development" value="interest_development" name="interest"><label class="light" for="development">option 1</label><br>
+            <input type="checkbox" id="design" value="interest_design" name="interest"><label class="light" for="design">option 2</label><br>
+            <input type="checkbox" id="business" value="interest_business" name="interest"><label class="light" for="business">option 3</label>
+
+
+            <button type="submit">Submit Data</button>
+          </form>
+
+          <script>
+            const form = document.getElementById('optionsForm');
+
+            form.addEventListener('submit', (e) => {
+              e.preventDefault();
+
+              const formData = new FormData(form);
+              const dataArray = formData.getAll('options[]');
+
+              console.log(dataArray);
+            });
+          </script>
         </fieldset>
         <fieldset>
-
-          </select>
-
-          <label>Correct option:</label>
-          <input type="checkbox" id="development" value="interest_development" name="user_interest"><label class="light" for="development">option 1</label><br>
-          <input type="checkbox" id="design" value="interest_design" name="user_interest"><label class="light" for="design">option 2</label><br>
-          <input type="checkbox" id="business" value="interest_business" name="user_interest"><label class="light" for="business">option 3</label>
-
+      </select>
         </fieldset>
 
-        <button type="submit">Submit </button>
 
       </form>
+
     </div>
   </div>
-
-
 
   <style>
     *,
@@ -180,12 +195,9 @@
 
     }
   </style>
-
-
 </body>
 
 </html>
-
 
 @section('content')
 

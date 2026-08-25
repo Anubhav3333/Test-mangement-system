@@ -15,6 +15,8 @@ class Question extends Authenticatable
 
     protected $table = 'questions';
 
+    
+
     protected $fillable = [
         'id',
         'test_id',

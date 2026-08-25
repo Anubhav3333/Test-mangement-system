@@ -38,4 +38,5 @@ Route::get('/Question ', [testcontroler::class, 'question']);
 
 // Add  Quiz 
 
-Route::get('/Quiz ', [testcontroler::class, 'Quiz']);
+Route::get('/Quiz ', [testcontroler::class, 'Quiz'])->name('quiz');
+Route::post('/Quiz', [testcontroler::class, 'Quizstore'])->name('Quizstore');

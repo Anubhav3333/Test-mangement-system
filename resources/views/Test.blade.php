@@ -71,8 +71,6 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css
         </div>
     </div>
 
-
-
     @empty
 
     <div class="col-12">

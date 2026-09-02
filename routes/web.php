@@ -33,12 +33,12 @@ Route::post('/registration', [testcontroler::class, 'registrationStore'])->name(
 
 
 // student  database realtion test 
-Route::get('/Question ', [testcontroler::class, 'question']);
-
-
+Route::get('/Question/{test}', [testcontroler::class, 'question'])->name('Question');
 
 // Add  Quiz 
 
 
 Route::get('/Quizfixed/{test}', [testcontroler::class, 'Quizfixed'])->name('Quizfixed');
 Route::post('/Quizstore', [testcontroler::class, 'store'])->name('Quizstore');
+Route::get('/test/{test}/edit', [testcontroler::class, 'edit'])->name('testedit');
+

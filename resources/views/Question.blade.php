@@ -156,37 +156,59 @@
         }
 </style>
 <body>
-    <div class="quiz-container">
-        <div class="progress-bar">
-            <div class="progress"></div>
-        </div>
 
-        <div class="step active" data-step="1">
-            <h2>{{ $question-> question_text }}</h2>
+<div class="quiz-container">
+
+    <div class="progress-bar">
+        <div class="progress"></div>
+    </div>
+
+    @foreach($questions as $question)
+
+        <div class="step {{ $loop->first ? 'active' : '' }}" data-step="{{ $loop->iteration }}">
+
+            <h2>{{ $question->question_text }}</h2>
 
             <div class="options">
-                @foreach($question->question_options as $option)
+
+                @foreach($question->options as $option)
+
                     <label class="option">
-                        <input type="radio" name="q1" value="{{ $option->option_id }}">
+                        <input type="radio"
+                               name="question_{{ $question->id }}"
+                               value="{{ $option->option_id }}">
+
                         {{ $option->option_text }}
                     </label>
+
                 @endforeach
+
             </div>
 
             <div class="buttons">
-                <button class="prev-btn" disabled>Previous</button>
-                <button class="next-btn" disabled>Next</button>
+
+                <button class="prev-btn" {{ $loop->first ? 'disabled' : '' }}>
+                    Previous
+                </button>
+
+                <button class="next-btn" disabled>
+                    Next
+                </button>
+
             </div>
+
         </div>
 
-        <div class="result">
-            <h2>Quiz Completed!</h2>
-            <p>Thank you for participating in our quiz.</p>
-            <div id="answers-summary"></div>
-            <button class="restart-btn">Restart Quiz</button>
-        </div>
+    @endforeach
+
+    <div class="result">
+        <h2>Quiz Completed!</h2>
+        <p>Thank you for participating in our quiz.</p>
+        <div id="answers-summary"></div>
+        <button class="restart-btn">Restart Quiz</button>
     </div>
 
+</div>
 
 
       <script>

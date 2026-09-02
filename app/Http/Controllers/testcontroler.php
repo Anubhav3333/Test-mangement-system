@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Test;
 use App\Models\Question;
+use App\Models\question_options;
 use App\Models\QuestionOption;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,13 +25,22 @@ class testcontroler extends Controller
 
 {
 
-    public function Quizfixed($test)
-    {
-        $test = Test::findOrFail($test);
+  
+
+public function Quizfixed($test)
+{
+    $test = Test::findOrFail($test);
+
+    $questions = Question::with('options')
+        ->where('test_id', $test->id)
+
+        ->get();
+
+    return view('Quizfixed', compact('test', 'questions'));
+}
 
 
-        return view('Quizfixed', compact('test'));
-    }
+
 
 
     public function welcome()
@@ -98,7 +108,7 @@ class testcontroler extends Controller
         $find  = test::findOrFail($id);
         $find->update($request->all());
 
-        return redirect()->route("tests");
+        return redirect()->route("test");
     }
 
 
@@ -163,51 +173,47 @@ class testcontroler extends Controller
         } else  return redirect('/student');
     }
 
-    // usertable
-    public function question()
-    {
-        $question = Question::with('question_options')->first();
-        return  view("question", compact("question"));
-    }
 
-
-  public function store(Request $request)
+  public function question($test)
 {
+    $test = Test::findOrFail($test);
 
+    $questions = Question::with('options')
+        ->where('test_id', $test->id)
+        ->get();
 
-    $request->validate([
-        'test_id'        => 'required|exists:tests,id',
-        'question_text'  => 'required|string',
-        'options'        => 'required|array|size:3',
-        'question_number' => 'required|integer',
-        'options.*'      => 'required|string',
-        'correct_option' => 'required|integer|between:0,2',
-    ]);
-
-     $question = Question::create([
-    'test_id'         => $request->test_id,
-    'question_text'   => $request->question_text,
-    'question_number' => $request->question_number,
-]);
-
-dd($question);
-
-    foreach ($request->options as $index => $option) {
-        QuestionOption::create([
-            'question_id'  => $question->id,
-            'option_label' => chr(65 + $index),
-            'option_text'  => $option,
-            'is_correct'   => $request->correct_option == $index ? 1 : 0,
-        ]);
-    }
-
-    return back()->with('success', 'Question added successfully.');
+    return view('question', compact('test', 'questions'));
 }
 
+    public function store(Request $request)
+    {
+
+        $request->validate([
+            'test_id'        => 'required|exists:tests,id',
+            'question_text'  => 'required|string',
+            'options'        => 'required|array|size:3',
+            'correct_option' => 'required|string|between:0,2',
+        ]);
+
+        $question = Question::create([
+            'test_id'         => $request->test_id,
+            'question_text'   => $request->question_text,
+            'question_number' => $request->question_number,
+        ]);
 
 
+        foreach ($request->options as $question_index => $option) {
+            question_options::create([
+                'question_id'  => $question->id,
+                'option_label' => chr(65 + $question_index),
+                'option_text'  => $option,
+                'is_correct'   => $request->correct_option == $question_index ? 1 : 0,
+            ]);
+        }
+// dd($request->all());
 
-
+       return redirect()->route('Question', ['test' => $request->test_id]);
+    }
 
     public function logout(Request $request)
     {
@@ -218,4 +224,7 @@ dd($question);
 
         return redirect('/login');
     }
+
+
+
 }

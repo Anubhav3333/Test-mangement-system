@@ -13,7 +13,6 @@ class Question extends Model
         'question_text',
         'question_number',
     ];
-
     public function options()
     {
         return $this->hasMany(question_options::class, 'question_id');

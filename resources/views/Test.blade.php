@@ -25,6 +25,57 @@
 
 <div class="col-md-6 col-lg-3 mb-4">
 
+
+<div class="modal fade" id="editTest{{ $test->id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Test</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form action="{{ route('testupdate', $test->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label">Test Title</label>
+                        <input type="text" name="title" class="form-control"
+                               value="{{ $test->title }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control">{{ $test->description }}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Duration</label>
+                        <input type="number" name="duration_minutes" class="form-control"
+                               value="{{ $test->duration_minutes }}">
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+
+                    <button type="submit" class="btn btn-primary">
+                        Update
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
     <div class="card shadow-sm border-0 rounded-3 h-30" style="min-height: 280px;">
 
         <div class="card-body p-3">
@@ -52,12 +103,12 @@
                     </button>
 
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="bi bi-pencil-square text-warning me-2"></i>
-                                Edit
-                            </a>
-                        </li>
+                     <li>
+    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editTest{{ $test->id }}">
+        <i class="bi bi-pencil-square text-warning me-2"></i>
+        Edit
+    </a>
+</li>
 
                         <li>
                             <form action="{{ route('testdelete', $test->id) }}" method="POST">
@@ -70,6 +121,8 @@
                             </form>
                         </li>
                     </ul>
+
+                    
                 </div>
 
             </div>

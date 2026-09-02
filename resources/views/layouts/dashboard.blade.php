@@ -27,40 +27,97 @@
             </ul>
         </div>
     </header>
+
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">
-            <div> <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i>
-                    <span class="nav_logo-name">AtechSeva</span> </a>
-                <div class="nav_list"> <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i>
-                        <span class="nav_name">Dashboard</span> </a>
-                    <a href="{{ route('test')}}" class="nav_link"> <i class='bx bx-user nav_icon'></i>
-                        <span class="nav_name">Users</span> </a>
-                    <a href="#" class="nav_link"> <i class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Messages</span> </a> <a href="#" class="nav_link"> <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Bookmark</span> </a> <a href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Files</span> </a>
-                    <a href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Stats</span> </a>
+            <div>
+                <a href="#" class="nav_logo">
+                    <i class='bx bx-layer nav_logo-icon'></i>
+                    <span class="nav_logo-name">AtechSeva</span>
+                </a>
+
+                <div class="nav_list">
+                    <a href="" class="nav_link">
+                        <i class='bx bx-grid-alt nav_icon'></i>
+                        <span class="nav_name">Dashboard</span>
+                    </a>
+
+                    <a href="{{ route('test')}}" class="nav_link">
+                        <i class='bx bx-user nav_icon'></i>
+                        <span class="nav_name">Users</span>
+                    </a>
+
+                    <a href="#" class="nav_link">
+                        <i class='bx bx-message-square-detail nav_icon'></i>
+                        <span class="nav_name">Messages</span>
+                    </a>
+
+                    <a href="#" class="nav_link">
+                        <i class='bx bx-bookmark nav_icon'></i>
+                        <span class="nav_name">Bookmark</span>
+                    </a>
+
+                    <a href="#" class="nav_link">
+                        <i class='bx bx-folder nav_icon'></i>
+                        <span class="nav_name">Files</span>
+                    </a>
+
+                    <a href="#" class="nav_link">
+                        <i class='bx bx-bar-chart-alt-2 nav_icon'></i>
+                        <span class="nav_name">Stats</span>
+                    </a>
                 </div>
-            </div> <a href="#" class="nav_link"> <i class='bx bx-log-out nav_icon'></i>
-                <span class="nav_name">SignOut</span> </a>
+            </div>
+
+         <a href="#" class="nav_link" data-bs-toggle="modal" data-bs-target="#logoutModal">
+    <i class='bx bx-log-out nav_icon'></i>
+    <span class="nav_name">SignOut</span>
+</a>
         </nav>
     </div>
 
-    <!--Container Main start-->
-  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
-
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!--Container Main end-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/js/bootstrap.bundle.min.js"></script>
     <script src="main.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggle = document.getElementById("header-toggle"),
+                nav = document.getElementById("nav-bar"),
+                bodypd = document.getElementById("body-pd"),
+                headerpd = document.getElementById("header");
+
+            if (toggle && nav && bodypd && headerpd) {
+                toggle.addEventListener("click", function () {
+                    nav.classList.toggle("sidebarshow");
+                    toggle.classList.toggle("bx-x");
+                    bodypd.classList.toggle("body-pd");
+                    headerpd.classList.toggle("body-pd");
+                });
+            }
+
+            const linkColor = document.querySelectorAll(".nav_link");
+            const currentPath = window.location.pathname;
+
+            linkColor.forEach(function (link) {
+                const href = link.getAttribute("href");
+
+                if (href && href !== "#") {
+                    const linkPath = new URL(href, window.location.origin).pathname;
+
+                    if (linkPath === currentPath) {
+                        link.classList.add("active");
+                    }
+                }
+            });
+        });
+    </script>
+
     <script>
         $('.owl-carousel').owlCarousel({
             loop: true,
@@ -80,13 +137,41 @@
                 }
             }
         });
-    </script
+    </script>
+
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="logoutModalLabel">Are you sure?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                Are you sure you want to logout?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-danger">
+                        Yes, Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 </body>
 
-
 </html>
-
 
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
@@ -133,7 +218,6 @@
         justify-content: space-between;
         padding: 0 1rem;
         background-color: var(--white-color);
-
         z-index: var(--z-fixed);
         transition: 0.5s;
         box-shadow: 1px 1px 17px -4px rgb(0 0 0 / 16%);
@@ -317,7 +401,6 @@
         text-align: center;
     }
 
-    /* // carousel.css */
     .mainslider .item {
         height: 100vh;
         position: relative;
@@ -428,7 +511,6 @@
         width: 40px;
         cursor: pointer;
         height: 40px;
-        position: absolute;
         display: block;
         z-index: 1000;
         border-radius: 0;
@@ -458,7 +540,6 @@
         width: 40px;
         cursor: pointer;
         height: 40px;
-        position: absolute;
         display: block;
         z-index: 1000;
         border-radius: 0;
@@ -487,39 +568,3 @@
         opacity: 1;
     }
 </style>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function(event) {
-        const showNavbar = (toggleId, navId, bodyId, headerId) => {
-            const toggle = document.getElementById(toggleId),
-                nav = document.getElementById(navId),
-                bodypd = document.getElementById(bodyId),
-                headerpd = document.getElementById(headerId);
-            // Validate that all variables exist
-            if (toggle && nav && bodypd && headerpd) {
-                toggle.addEventListener("click", () => {
-                    // show navbar
-                    nav.classList.toggle("sidebarshow");
-                    // change icon
-                    toggle.classList.toggle("bx-x");
-                    // add padding to body
-                    bodypd.classList.toggle("body-pd");
-                    // add padding to header
-                    headerpd.classList.toggle("body-pd");
-                });
-            }
-        };
-        showNavbar("header-toggle", "nav-bar", "body-pd", "header");
-        /*===== LINK ACTIVE =====*/
-        const linkColor = document.querySelectorAll(".nav_link");
-
-        function colorLink() {
-            if (linkColor) {
-                linkColor.forEach((l) => l.classList.remove("active"));
-                this.classList.add("active");
-            }
-        }
-        linkColor.forEach((l) => l.addEventListener("click", colorLink));
-        // Your code to run since DOM is loaded and ready
-    });
-</script>

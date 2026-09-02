@@ -23,6 +23,7 @@ Route::delete('/Test/{id}', [testcontroler::class, 'deleteupdate'])->name('testd
 // login 
 Route::get('/login', [testcontroler::class, 'login'])->name('login');
 
+Route::post('/logout', [testcontroler::class, 'logout'])->name('logout');
 Route::post('/login', [testcontroler::class, 'summitLogin']);
 
 // ragistration 
@@ -38,5 +39,6 @@ Route::get('/Question ', [testcontroler::class, 'question']);
 
 // Add  Quiz 
 
-Route::get('/Quiz ', [testcontroler::class, 'Quiz'])->name('quiz');
-Route::post('/Quiz', [testcontroler::class, 'Quizstore'])->name('Quizstore');
+
+Route::get('/Quizfixed/{test}', [testcontroler::class, 'Quizfixed'])->name('Quizfixed');
+Route::post('/Quizstore', [testcontroler::class, 'store'])->name('Quizstore');

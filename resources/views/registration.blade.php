@@ -25,6 +25,9 @@
                         autocomplete="name"
                         required>
                 </div>
+                @error('name')
+                    <p class="error">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="input-group">
@@ -40,6 +43,9 @@
                         autocomplete="email"
                         required>
                 </div>
+                @error('email')
+                    <p class="error">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="input-group">
@@ -61,6 +67,9 @@
                         Show
                     </button>
                 </div>
+                @error('password')
+                    <p class="error">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="input-group">
@@ -86,14 +95,13 @@
 
             <div class="input-group">
                 <label for="role">Role</label>
-                <select
-                    id="role"
-                    name="role"
-                    required
-                    style="color: #cbd5e1; background-color: #37447c; padding: 12px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.1);">
-                    <option value="student">Student</option>
-                    <option value="teacher">Teacher</option>
+                <select id="role" name="role" required>
+                    <option value="student" {{ old('role') == 'student' ? 'selected' : '' }}>Student</option>
+                    <option value="teacher" {{ old('role') == 'teacher' ? 'selected' : '' }}>Teacher</option>
                 </select>
+                @error('role')
+                    <p class="error">{{ $message }}</p>
+                @enderror
             </div>
 
             <button class="submit-btn" type="submit">Register</button>
@@ -108,286 +116,298 @@
     </div>
 </div>
 
+<style>
+* {
+    box-sizing: border-box;
+}
 
+html,
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Inter", Arial, sans-serif;
+}
 
- <style>
-   * {
-     box-sizing: border-box;
-   }
+body {
+    background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, 0.22), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.22), transparent 28%),
+        linear-gradient(135deg, #0f172a 0%, #111827 45%, #020617 100%);
+    color: #f8fafc;
+}
 
-   html,
-   body {
-     margin: 0;
-     min-height: 100vh;
-     font-family: "Inter", Arial, sans-serif;
-   }
+.page {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    overflow: hidden;
+}
 
-   body {
-     background:
-       radial-gradient(circle at top left, rgba(59, 130, 246, 0.22), transparent 30%),
-       radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.22), transparent 28%),
-       linear-gradient(135deg, #0f172a 0%, #111827 45%, #020617 100%);
-     color: #f8fafc;
-   }
+.background-shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(10px);
+    opacity: 0.9;
+    pointer-events: none;
+}
 
-   .page {
-     position: relative;
-     min-height: 100vh;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     padding: 24px;
-     overflow: hidden;
-   }
+.shape-1 {
+    width: 280px;
+    height: 280px;
+    top: 8%;
+    left: 10%;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.45), rgba(56, 189, 248, 0));
+}
 
-   .background-shape {
-     position: absolute;
-     border-radius: 50%;
-     filter: blur(10px);
-     opacity: 0.9;
-     pointer-events: none;
-   }
+.shape-2 {
+    width: 320px;
+    height: 320px;
+    bottom: 6%;
+    right: 8%;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.4), rgba(168, 85, 247, 0));
+}
 
-   .shape-1 {
-     width: 280px;
-     height: 280px;
-     top: 8%;
-     left: 10%;
-     background: radial-gradient(circle, rgba(56, 189, 248, 0.45), rgba(56, 189, 248, 0));
-   }
+.login-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 430px;
+    padding: 32px;
+    border-radius: 24px;
+    background: rgba(15, 23, 42, 0.56);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+}
 
-   .shape-2 {
-     width: 320px;
-     height: 320px;
-     bottom: 6%;
-     right: 8%;
-     background: radial-gradient(circle, rgba(168, 85, 247, 0.4), rgba(168, 85, 247, 0));
-   }
+.login-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(96, 165, 250, 0.35);
+    box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.48),
+        0 0 30px rgba(59, 130, 246, 0.12);
+}
 
-   .login-card {
-     position: relative;
-     z-index: 1;
-     width: 100%;
-     max-width: 430px;
-     padding: 32px;
-     border-radius: 24px;
-     background: rgba(15, 23, 42, 0.56);
-     border: 1px solid rgba(255, 255, 255, 0.12);
-     backdrop-filter: blur(16px);
-     -webkit-backdrop-filter: blur(16px);
-     box-shadow:
-       0 20px 60px rgba(0, 0, 0, 0.4),
-       inset 0 1px 0 rgba(255, 255, 255, 0.06);
-     transition:
-       transform 0.3s ease,
-       box-shadow 0.3s ease,
-       border-color 0.3s ease;
-   }
+.card-header {
+    margin-bottom: 24px;
+}
 
-   .login-card:hover {
-     transform: translateY(-6px);
-     border-color: rgba(96, 165, 250, 0.35);
-     box-shadow:
-       0 28px 80px rgba(0, 0, 0, 0.48),
-       0 0 30px rgba(59, 130, 246, 0.12);
-   }
+.card-badge {
+    display: inline-block;
+    margin-bottom: 14px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgba(59, 130, 246, 0.14);
+    border: 1px solid rgba(96, 165, 250, 0.28);
+    color: #bfdbfe;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
 
-   .card-header {
-     margin-bottom: 24px;
-   }
+.card-header h1 {
+    margin: 0 0 10px 0;
+    font-size: 2rem;
+    line-height: 1.1;
+}
 
-   .card-badge {
-     display: inline-block;
-     margin-bottom: 14px;
-     padding: 7px 12px;
-     border-radius: 999px;
-     background: rgba(59, 130, 246, 0.14);
-     border: 1px solid rgba(96, 165, 250, 0.28);
-     color: #bfdbfe;
-     font-size: 0.78rem;
-     font-weight: 700;
-     letter-spacing: 0.04em;
-   }
+.card-header p {
+    margin: 0;
+    color: #cbd5e1;
+    font-size: 0.98rem;
+    line-height: 1.6;
+}
 
-   .card-header h1 {
-     margin: 0 0 10px 0;
-     font-size: 2rem;
-     line-height: 1.1;
-   }
+.input-group {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 18px;
+}
 
-   .card-header p {
-     margin: 0;
-     color: #cbd5e1;
-     font-size: 0.98rem;
-     line-height: 1.6;
-   }
+.input-group label {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #e2e8f0;
+}
 
-   .login-form {
-     display: grid;
-     gap: 18px;
-   }
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
 
-   .input-group {
-     display: grid;
-     gap: 8px;
-   }
+.input-icon {
+    position: absolute;
+    left: 14px;
+    font-size: 0.95rem;
+    opacity: 0.8;
+}
 
-   .input-group label {
-     font-size: 0.92rem;
-     font-weight: 600;
-     color: #e2e8f0;
-   }
+.input-wrapper input {
+    width: 100%;
+    padding: 15px 48px 15px 42px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.06);
+    color: #f8fafc;
+    font-size: 0.96rem;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
 
-   .input-wrapper {
-     position: relative;
-     display: flex;
-     align-items: center;
-   }
+.input-wrapper input::placeholder {
+    color: #94a3b8;
+}
 
-   .input-icon {
-     position: absolute;
-     left: 14px;
-     font-size: 0.95rem;
-     opacity: 0.8;
-   }
+.input-wrapper input:focus {
+    border-color: rgba(96, 165, 250, 0.55);
+    background: rgba(255, 255, 255, 0.09);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
+}
 
-   .input-wrapper input {
-     width: 100%;
-     padding: 15px 48px 15px 42px;
-     border-radius: 14px;
-     border: 1px solid rgba(255, 255, 255, 0.1);
-     background: rgba(255, 255, 255, 0.06);
-     color: #f8fafc;
-     font-size: 0.96rem;
-     outline: none;
-     transition:
-       border-color 0.2s ease,
-       background-color 0.2s ease,
-       box-shadow 0.2s ease;
-   }
+.input-group select {
+    width: 100%;
+    padding: 15px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.06);
+    color: #f8fafc;
+    font-size: 0.96rem;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
 
-   .input-wrapper input::placeholder {
-     color: #94a3b8;
-   }
+.input-group select:focus {
+    border-color: rgba(96, 165, 250, 0.55);
+    background: rgba(255, 255, 255, 0.09);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
+}
 
-   .input-wrapper input:focus {
-     border-color: rgba(96, 165, 250, 0.55);
-     background: rgba(255, 255, 255, 0.09);
-     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
-   }
+.input-group select option {
+    background: #1e293b;
+    color: #f8fafc;
+}
 
-   .toggle-password {
-     position: absolute;
-     right: 10px;
-     border: none;
-     background: transparent;
-     color: #93c5fd;
-     font-size: 0.84rem;
-     font-weight: 700;
-     cursor: pointer;
-     padding: 6px 8px;
-   }
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    border: none;
+    background: transparent;
+    color: #93c5fd;
+    font-size: 0.84rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 6px 8px;
+}
 
-   .toggle-password:hover {
-     color: #dbeafe;
-   }
+.toggle-password:hover {
+    color: #dbeafe;
+}
 
-   .form-options {
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     gap: 12px;
-     flex-wrap: wrap;
-   }
+.error {
+    color: #f87171;
+    font-size: 0.85rem;
+    margin: 0;
+}
 
-   .remember-me {
-     display: inline-flex;
-     align-items: center;
-     gap: 8px;
-     color: #cbd5e1;
-     font-size: 0.92rem;
-     cursor: pointer;
-   }
+.submit-btn {
+    margin-top: 4px;
+    width: 100%;
+    border: none;
+    border-radius: 16px;
+    padding: 15px 18px;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    color: white;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
 
-   .remember-me input {
-     accent-color: #60a5fa;
-   }
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 30px rgba(59, 130, 246, 0.28);
+    filter: brightness(1.06);
+}
 
-   .forgot-link,
-   .card-footer a {
-     color: #93c5fd;
-     text-decoration: none;
-     transition: color 0.2s ease;
-   }
+.card-footer {
+    margin-top: 22px;
+    text-align: center;
+}
 
-   .forgot-link:hover,
-   .card-footer a:hover {
-     color: #dbeafe;
-   }
+.card-footer p {
+    margin: 0;
+    color: #cbd5e1;
+    font-size: 0.92rem;
+}
 
-   .submit-btn {
-     margin-top: 4px;
-     width: 100%;
-     border: none;
-     border-radius: 16px;
-     padding: 15px 18px;
-     background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-     color: white;
-     font-size: 1rem;
-     font-weight: 800;
-     cursor: pointer;
-     transition:
-       transform 0.2s ease,
-       box-shadow 0.2s ease,
-       filter 0.2s ease;
-   }
+.card-footer a {
+    color: #93c5fd;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
 
-   .submit-btn:hover {
-     transform: translateY(-2px);
-     box-shadow: 0 16px 30px rgba(59, 130, 246, 0.28);
-     filter: brightness(1.06);
-   }
+.card-footer a:hover {
+    color: #dbeafe;
+}
 
-   .card-footer {
-     margin-top: 22px;
-     text-align: center;
-   }
+@media (max-width: 520px) {
+    .login-card {
+        padding: 24px;
+        border-radius: 20px;
+    }
 
-   .card-footer p {
-     margin: 0;
-     color: #cbd5e1;
-     font-size: 0.92rem;
-   }
+    .card-header h1 {
+        font-size: 1.7rem;
+    }
 
-   @media (max-width: 520px) {
-     .login-card {
-       padding: 24px;
-       border-radius: 20px;
-     }
+    .input-wrapper input {
+        padding: 14px 46px 14px 40px;
+    }
 
-     .card-header h1 {
-       font-size: 1.7rem;
-     }
+    .shape-1,
+    .shape-2 {
+        display: none;
+    }
+}
+</style>
 
-     .input-wrapper input {
-       padding: 14px 46px 14px 40px;
-     }
+<script>
+    const passwordInput = document.getElementById("password");
+    const togglePasswordBtn = document.getElementById("togglePassword");
+    const confirmPasswordInput = document.getElementById("password_confirmation");
+    const toggleConfirmPasswordBtn = document.getElementById("toggleConfirmPassword");
 
-     .shape-1,
-     .shape-2 {
-       display: none;
-     }
-   }
- </style>
+    togglePasswordBtn.addEventListener("click", () => {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+        togglePasswordBtn.textContent = isPassword ? "Hide" : "Show";
+    });
 
- <script>
-   const passwordInput = document.getElementById("password");
-   const togglePasswordBtn = document.getElementById("togglePassword");
-
-   togglePasswordBtn.addEventListener("click", () => {
-     const isPassword = passwordInput.type === "password";
-
-     passwordInput.type = isPassword ? "text" : "password";
-     togglePasswordBtn.textContent = isPassword ? "Hide" : "Show";
-   });
- </script>
+    toggleConfirmPasswordBtn.addEventListener("click", () => {
+        const isPassword = confirmPasswordInput.type === "password";
+        confirmPasswordInput.type = isPassword ? "text" : "password";
+        toggleConfirmPasswordBtn.textContent = isPassword ? "Hide" : "Show";
+    });
+</script>

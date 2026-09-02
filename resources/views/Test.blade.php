@@ -1,13 +1,14 @@
 @extends('layouts.dashboard')
 
-<link href="
-https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css
-" rel="stylesheet">
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h3 class="mb-0">
         <i class="bi bi-journal-text"></i> My tests
     </h3>
+
     <button type="button"
         class="btn btn-primary"
         data-bs-toggle="modal"
@@ -18,75 +19,116 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css
 </div>
 
 <div class="row">
-    <div style="margin-bottom: 2%;" class="col-">
-       
-    </div>
-
+<div class="row">
 
     @forelse($test as $test)
 
-    <div class="col-md-4 col-lg-3 mb-4">
-        <div class="card shadow-sm h-100" style="cursor:pointer; transition:.3s;" data-bs-toggle="modal" data-bs-target="#testModal{{ $test->id }}">
-            <div class="card-body">
-                <h5 class="card-title text-primary">{{ $test->title }}</h5>
-                <p class="card-text text-muted">{{ $test->description }}</p>
-                <p class="card-text text-muted">{{ $test->duration_minutes }} mins</p>
-                <small class="text-muted">
-                    <i class="bi bi-calendar"></i> {{ $test->created_at->format('d M Y') }}
-                </small>
+<div class="col-md-6 col-lg-3 mb-4">
+
+    <div class="card shadow-sm border-0 rounded-3 h-30" style="min-height: 280px;">
+
+        <div class="card-body p-3">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <span class="badge rounded-pill
+                    @if($test->status == 'PUBLISHED')
+                        bg-success
+                    @elseif($test->status == 'DRAFT')
+                        bg-warning text-dark
+                    @elseif($test->status == 'CLOSED')
+                        bg-danger
+                    @else
+                        bg-secondary
+                    @endif">
+                    {{ $test->status }}
+                </span>
+
+                <div class="dropdown">
+                    <button type="button"
+                        class="btn btn-sm btn-light rounded-circle"
+                        data-bs-toggle="dropdown">
+                        <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="bi bi-pencil-square text-warning me-2"></i>
+                                Edit
+                            </a>
+                        </li>
+
+                        <li>
+                            <form action="{{ route('testdelete', $test->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="dropdown-item text-danger">
+                                    <i class="bi bi-trash me-2"></i>
+                                    Delete
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
 
-            <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
-                <div>
-                    <button type="button" class="btn btn-sm btn-outline-warning me-2" title="Edit" onclick="event.stopPropagation();">
-                        <i class="bi bi-pencil-square"></i>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-danger" title="Delete" onclick="event.stopPropagation();">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </div>
-                <!-- <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#QuestionModalLong{{ $test->id }}" onclick="event.stopPropagation()">
-                    Question
-                </button> -->
-                    <a class="btn btn-primary" href="{{ route('Quizstore') }}" role="button">Question</a>
+            <h6 class="card-title fw-semibold text-primary mb-2">
+                {{ $test->title }}
+            </h6>
+
+            <p class="card-text text-muted small mb-3">
+                {{ $test->description }}
+            </p>
+
+            <div class="d-flex gap-2 flex-wrap mb-3">
+
+                <span class="badge bg-primary">
+                    <i class="bi bi-clock me-1"></i>
+                    {{ $test->duration_minutes }} mins
+                </span>
+
+                <span class="badge bg-secondary">
+                    <i class="bi bi-question-circle me-1"></i>
+                    {{ $test->total_questions }} Questions
+                </span>
+
             </div>
+
+            <small class="text-muted">
+                <i class="bi bi-calendar3 me-1"></i>
+                {{ $test->created_at->format('d M Y') }}
+            </small>
+
         </div>
+
+        <div class="card-footer bg-transparent border-0 p-3 pt-0 mt-auto">
+
+            <a class="btn btn-primary w-100"
+                href="{{ route('Quizfixed', $test->id) }}">
+                <i class="bi bi-question-circle me-1"></i>
+                Questions
+            </a>
+
+        </div>
+
     </div>
 
-    <div class="modal fade" id="QuestionModalLong{{ $test->id }}" tabindex="-1" aria-labelledby="QuestionModalLongTitle{{ $test->id }}" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="QuestionModalLongTitle{{ $test->id }}">Question</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <textarea name="" id="" cols="30" class="form-control"></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-secondary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
 
     @empty
 
     <div class="col-12">
         <div class="alert alert-info text-center py-5">
             <i class="bi bi-journal-text fs-1"></i>
-
-            <p class="mt-3">
-                No tests found.
-            </p>
+            <p class="mt-3 mb-0">No tests found.</p>
         </div>
     </div>
 
     @endforelse
 
-
-  
+</div>
 
 </div>
 
@@ -97,14 +139,18 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css
     aria-hidden="true">
 
     <div class="modal-dialog">
+
         <div class="modal-content">
 
             <form action="" method="POST" id="addtestForm">
+
                 @csrf
 
                 <div class="modal-header">
+
                     <h5 class="modal-title" id="addtestModalLabel">
-                        <i class="bi bi-plus-circle"></i> Add New test
+                        <i class="bi bi-plus-circle"></i>
+                        Add New test
                     </h5>
 
                     <button type="button"
@@ -112,13 +158,15 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css
                         data-bs-dismiss="modal"
                         aria-label="Close">
                     </button>
+
                 </div>
 
                 <div class="modal-body">
 
                     <div class="mb-3">
                         <label class="form-label">
-                            <i class="bi bi-pencil"></i> Title
+                            <i class="bi bi-pencil"></i>
+                            Title
                         </label>
 
                         <input type="text"
@@ -131,7 +179,8 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css
 
                     <div class="mb-3">
                         <label class="form-label">
-                            <i class="bi bi-file-text"></i> Test Discribtion
+                            <i class="bi bi-file-text"></i>
+                            Test Description
                         </label>
 
                         <textarea name="description"
@@ -144,58 +193,58 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css
 
                     <div class="mb-3">
                         <label class="form-label">
-                            <i class="bi bi-pencil"></i> Duration-Minutes
+                            <i class="bi bi-clock"></i>
+                            Duration-Minutes
                         </label>
 
                         <input type="number"
                             name="duration_minutes"
                             id="duration_minutes"
                             class="form-control"
-                            placeholder="duration minutes"
-                            required
-                            maxlength="100">
+                            placeholder="Duration minutes"
+                            required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">
-                            <i class="bi bi-pencil">total_questions</i>
+                            <i class="bi bi-list-ol"></i>
+                            Total Questions
                         </label>
 
                         <input type="number"
                             name="total_questions"
                             id="total_questions"
                             class="form-control"
-                            placeholder="Enter total Questions"
-                            required
-                            maxlength="200">
+                            placeholder="Enter total questions"
+                            required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">
-                            <i class="bi bi-pencil"> Marks per question</i>
+                            <i class="bi bi-award"></i>
+                            Marks per question
                         </label>
 
                         <input type="number"
                             name="marks_per_question"
                             id="marks_per_question"
                             class="form-control"
-                            placeholder="total marks"
-                            required
-                            maxlength="200">
+                            placeholder="Marks per question"
+                            required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">
-                            <i class="bi bi-pencil">Negative_marks</i>
+                            <i class="bi bi-dash-circle"></i>
+                            Negative Marks
                         </label>
 
                         <input type="number"
                             name="negative_marks"
                             id="negative_marks"
                             class="form-control"
-                            placeholder="nagative mark"
-                            required
-                            maxlength="200">
+                            placeholder="Negative marks"
+                            required>
                     </div>
 
                 </div>
@@ -205,18 +254,52 @@ https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css
                     <button type="button"
                         class="btn btn-secondary"
                         data-bs-dismiss="modal">
-                        <i class="bi bi-x"></i> Close
+                        <i class="bi bi-x"></i>
+                        Close
                     </button>
 
                     <button type="submit"
                         class="btn btn-primary">
-                        <i class="bi bi-check-circle"></i> Save test
+                        <i class="bi bi-check-circle"></i>
+                        Save test
                     </button>
 
                 </div>
 
             </form>
 
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form method="POST" action="{{ route('testupdate', $test->id) }}">
+                @csrf
+                @method('PUT')
+
+                <div class="modal-body">
+                    <input type="text" name="title" class="form-control" value="{{ $test->title }}">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="btn btn-primary">
+                        Update
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

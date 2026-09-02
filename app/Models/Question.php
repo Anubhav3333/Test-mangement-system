@@ -2,30 +2,20 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
-class Question extends Authenticatable
+class Question extends Model
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
-
     protected $table = 'questions';
 
-    
-
     protected $fillable = [
-        'id',
         'test_id',
         'question_text',
-
+        'question_number',
     ];
 
-public function question_options()
-{
-    return $this->hasMany(question_options::class, 'question_id');
-}
+    public function options()
+    {
+        return $this->hasMany(question_options::class, 'question_id');
+    }
 }

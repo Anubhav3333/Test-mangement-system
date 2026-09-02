@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Test;
 use App\Models\Question;
-use App\Models\question_options;
+use App\Models\QuestionOption;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\users;
@@ -23,6 +23,15 @@ class testcontroler extends Controller
 
 
 {
+
+    public function Quizfixed($test)
+    {
+        $test = Test::findOrFail($test);
+
+
+        return view('Quizfixed', compact('test'));
+    }
+
 
     public function welcome()
     {
@@ -84,9 +93,12 @@ class testcontroler extends Controller
 
     public function testupdate(Request $request, $id)
     {
+
+
         $find  = test::findOrFail($id);
         $find->update($request->all());
-        return redirect()->route("test");
+
+        return redirect()->route("tests");
     }
 
 
@@ -158,33 +170,52 @@ class testcontroler extends Controller
         return  view("question", compact("question"));
     }
 
-    public function Quiz()
-    {
-        return view('quiz');
-    }
-  public function Quizstore(Request $request)
+
+  public function store(Request $request)
 {
-    $validated = $request->validate([
-        'question_text' => 'required|string', 
-        'options'       => 'required|array|min:2',
+
+
+    $request->validate([
+        'test_id'        => 'required|exists:tests,id',
+        'question_text'  => 'required|string',
+        'options'        => 'required|array|size:3',
+        'question_number' => 'required|integer',
+        'options.*'      => 'required|string',
+        'correct_option' => 'required|integer|between:0,2',
     ]);
 
-    $question  = Question::create([
-        'question_text' => $validated['question_text'], 
+     $question = Question::create([
+    'test_id'         => $request->test_id,
+    'question_text'   => $request->question_text,
+    'question_number' => $request->question_number,
+]);
 
-    ]);
+dd($question);
 
-    foreach ($validated['options'] as $optionText) {
-        $question->question_options()->create([
-            'option' => $optionText
+    foreach ($request->options as $index => $option) {
+        QuestionOption::create([
+            'question_id'  => $question->id,
+            'option_label' => chr(65 + $index),
+            'option_text'  => $option,
+            'is_correct'   => $request->correct_option == $index ? 1 : 0,
         ]);
     }
 
-
-
-    return redirect()
-        ->route('Quiz')
-        ->with('success', 'Question  successfully!');
+    return back()->with('success', 'Question added successfully.');
 }
 
+
+
+
+
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
+    }
 }

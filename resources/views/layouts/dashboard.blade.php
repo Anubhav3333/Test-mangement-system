@@ -23,9 +23,11 @@
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#"><i class='bx bx-user-circle'></i> Account</a></li>
                 <li><a class="dropdown-item" href="#"><i class='bx bxs-widget'></i> Settings</a></li>
-                <li><a class="dropdown-item" href="#"><i class='bx bx-exit'></i> Logout</a></li>
+                <li><a  class='bx bx-exit'></i> Logout</a></li>
             </ul>
         </div>
+
+
     </header>
 
     <div class="l-navbar" id="nav-bar">
@@ -33,23 +35,23 @@
             <div>
                 <a href="#" class="nav_logo">
                     <i class='bx bx-layer nav_logo-icon'></i>
-                    <span class="nav_logo-name">AtechSeva</span>
+                    <span class="nav_logo-name">School managment System</span>
                 </a>
 
                 <div class="nav_list">
-                    <a href="" class="nav_link">
+                    <a href="{{ route('welcome')}}" class="nav_link">
                         <i class='bx bx-grid-alt nav_icon'></i>
                         <span class="nav_name">Dashboard</span>
                     </a>
 
                     <a href="{{ route('test')}}" class="nav_link">
                         <i class='bx bx-user nav_icon'></i>
-                        <span class="nav_name">Users</span>
+                        <span class="nav_name">Teacher</span>
                     </a>
 
                     <a href="#" class="nav_link">
                         <i class='bx bx-message-square-detail nav_icon'></i>
-                        <span class="nav_name">Messages</span>
+                        <span class="nav_name">Subjects</span>
                     </a>
 
                     <a href="#" class="nav_link">
@@ -64,7 +66,7 @@
 
                     <a href="#" class="nav_link">
                         <i class='bx bx-bar-chart-alt-2 nav_icon'></i>
-                        <span class="nav_name">Stats</span>
+                        <span class="nav_name">Student</span>
                     </a>
                 </div>
             </div>

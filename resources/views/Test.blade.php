@@ -159,7 +159,7 @@
         <div class="card-footer bg-transparent border-0 p-3 pt-0 mt-auto">
 
             <a class="btn btn-primary w-100"
-                href="{{ route('Quizfixed', $test->id) }}">
+                href="{{ route('Quizcreate', $test->id) }}">
                 <i class="bi bi-question-circle me-1"></i>
                 Questions
             </a>

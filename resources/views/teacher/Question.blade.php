@@ -12,7 +12,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #FFE5E5 0%, #E5F1FF 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #0b3d76 100%);
             padding: 20px;
         }
 
@@ -165,7 +165,8 @@
 
     @foreach($questions as $question)
 
-        <div class="step {{ $loop->first ? 'active' : '' }}" data-step="{{ $loop->iteration }}">
+        <div class="step {{ $loop->first ? 'active' :'' }}" data-step="{{ $loop->iteration }}">
+
 
             <h2>{{ $question->question_text }}</h2>
 

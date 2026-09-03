@@ -25,9 +25,7 @@ class testcontroler extends Controller
 
 {
 
-  
-
-public function Quizfixed($test)
+public function Quizcreate($test)
 {
     $test = Test::findOrFail($test);
 
@@ -36,18 +34,8 @@ public function Quizfixed($test)
 
         ->get();
 
-    return view('Quizfixed', compact('test', 'questions'));
+    return view('teacher.Quizcreate', compact('test', 'questions'));
 }
-
-
-
-
-
-    public function welcome()
-    {
-
-        return view('welcome');
-    }
 
 
     public function registration()
@@ -108,7 +96,7 @@ public function Quizfixed($test)
         $find  = test::findOrFail($id);
         $find->update($request->all());
 
-        return redirect()->route("test");
+        return redirect()->route("tests");
     }
 
 
@@ -129,10 +117,10 @@ public function Quizfixed($test)
             'title' => 'required|string|max:255',
             'description' => 'required',
             'duration_minutes' => 'required',
-            'total_questions' => '',
-            'marks_per_question' => '',
-            'negative_marks' => '',
-            'status' => '',
+            'total_questions' => 'required',
+            'marks_per_question' => 'required',
+            'negative_marks' => 'required',
+            'status' => 'required',
 
 
 
@@ -170,7 +158,7 @@ public function Quizfixed($test)
             return redirect('/admin');
         } else if ($user->role == 'TEACHER') {
             return redirect('/teacher');
-        } else  return redirect('/student');
+        } else  return redirect('/');
     }
 
 
@@ -182,7 +170,7 @@ public function Quizfixed($test)
         ->where('test_id', $test->id)
         ->get();
 
-    return view('question', compact('test', 'questions'));
+    return view(' teacher.question', compact('test', 'questions'));
 }
 
     public function store(Request $request)
@@ -191,8 +179,8 @@ public function Quizfixed($test)
         $request->validate([
             'test_id'        => 'required|exists:tests,id',
             'question_text'  => 'required|string',
-            'options'        => 'required|array|size:3',
-            'correct_option' => 'required|string|between:0,2',
+            'options'        => 'required|array|min:3|max:5',
+            'correct_option' => 'required|string|between:0,1',
         ]);
 
         $question = Question::create([
@@ -200,7 +188,6 @@ public function Quizfixed($test)
             'question_text'   => $request->question_text,
             'question_number' => $request->question_number,
         ]);
-
 
         foreach ($request->options as $question_index => $option) {
             question_options::create([
@@ -210,11 +197,11 @@ public function Quizfixed($test)
                 'is_correct'   => $request->correct_option == $question_index ? 1 : 0,
             ]);
         }
-// dd($request->all());
-
-       return redirect()->route('Question', ['test' => $request->test_id]);
+ 
+       return redirect()->route('welcome');
     }
 
+    //['test' => $request->test_id]//
     public function logout(Request $request)
     {
         Auth::logout();

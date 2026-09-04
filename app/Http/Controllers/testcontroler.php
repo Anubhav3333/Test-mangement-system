@@ -104,7 +104,7 @@ class testcontroler extends Controller
         $find  = test::findOrFail($id);
         $find->update($request->all());
 
-        return redirect()->route("tests");
+        return redirect()->route("test");
     }
 
 

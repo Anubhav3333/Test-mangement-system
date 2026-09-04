@@ -9,7 +9,7 @@
         <i class="bi bi-journal-text"></i> My tests
     </h3>
 
-    <button  style="margin-top: 20px ;" type="button"
+    <button style="margin-top: 20px ;" type="button"
         class="btn btn-primary"
         data-bs-toggle="modal"
         data-bs-target="#addtestModal">
@@ -58,6 +58,17 @@
                                         value="{{ $test->duration_minutes }}">
                                 </div>
 
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select name="status" class="form-control">
+                                        <option value="DRAFT" {{ $test->status == 'DRAFT' ? 'selected' : '' }}>DRAFT</option>
+                                        <option value="PUBLISHED" {{ $test->status == 'PUBLISHED' ? 'selected' : '' }}>PUBLISHED</option>
+                                        <option value="completed" {{ $test->status == 'CLOSED' ? 'selected' : '' }}>CLOSED</option>
+                                    </select>
+                                </div>
+
+
+                                {{ $test->duration_minutes }} mins
                             </div>
 
                             <div class="modal-footer">

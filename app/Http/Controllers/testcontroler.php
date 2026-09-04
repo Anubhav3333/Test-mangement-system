@@ -22,20 +22,28 @@ use GuzzleHttp\Psr7\Query;
 
 class testcontroler extends Controller
 
-
 {
 
-    public function Quizcreate($test)
-    {
-        $test = Test::findOrFail($test);
+   public function Quizcreate($test)
+{
+    $test = Test::findOrFail($test);
 
-        $questions = Question::with('options')
-            ->where('test_id', $test->id)
 
-            ->get();
+   
+    $questions = Question::with('options')
+        ->where('test_id', $test->id)
+           ->where('test_id', $test->total_questions)
+        ->get();
 
-        return view('teacher.Quizcreate', compact('test', 'questions'));
-    }
+        // dd($test->total_questions);
+       
+
+    return view('teacher.Quizcreate', compact(
+        'test',
+        'questions',
+        
+    ));
+}
 
 
     public function registration()
@@ -45,13 +53,13 @@ class testcontroler extends Controller
     }
 
 
-      public function Landing()
+    public function Landing()
     {
 
         return view('Landing');
     }
 
-    
+
 
     public function registrationStore(Request $request)
     {
@@ -84,11 +92,14 @@ class testcontroler extends Controller
 
 
 
-    public function test()
+    public function test( )
     {
         $test = test::all();
+
+        
         return view('test', compact('test'));
     }
+
     public function testpage()
     {
 
@@ -97,12 +108,18 @@ class testcontroler extends Controller
 
 
 
-    public function testupdate(Request $request, $id)
+    public function testupdate(Request $request, $id , 	)
     {
-
-
         $find  = test::findOrFail($id);
         $find->update($request->all());
+
+        return redirect()->route("test");
+    }
+
+     public function  findupdate(Request $request, $test_id ,)
+    {
+        $find  = test::findOrFail($test_id);
+        dd($request->all());
 
         return redirect()->route("test");
     }
@@ -118,27 +135,28 @@ class testcontroler extends Controller
     }
 
 
-public function testStore(Request $request)
-{
 
-  $validated = $request->validate([
-    'title' => 'required|string',
-    'description' => 'required|string',
-    'duration_minutes' => 'required|integer',
-    'total_questions' => 'required|integer',
-    'marks_per_question' => 'required|numeric',
-    'negative_marks' => 'required|numeric',
-    'status' => 'required|string',
-]);
-  
+    //  test created here 
+    public function testStore(Request $request )
+    {
 
-    Test::create($validated);
+        $validated = $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'duration_minutes' => 'required|integer',
+            'total_questions' => 'required|integer',
+            'marks_per_question' => 'required|numeric',
+            'negative_marks' => 'required|numeric',
+            'status' => 'required|string',
+        ]);
 
-    return redirect()
-        ->route('test')
-        ->with('success', 'test store successful!');
-}    
-  
+
+        Test::create($validated);
+        return redirect()
+            ->route('test' ,)
+            ->with('success', 'test store successful!');
+    }
+
     public function login()
     {
 
@@ -183,7 +201,9 @@ public function testStore(Request $request)
 
     public function store(Request $request)
     {
-     dd($request->all());
+        //  get id 
+        $testId = $request->input('test_id');
+
 
         $request->validate([
             'test_id'    => 'required|exists:tests,id',
@@ -192,29 +212,36 @@ public function testStore(Request $request)
             'questions.*.correct_option' => 'required|string',
         ]);
 
-foreach ($request->questions as $questionData) {
-        $question = Question::create([
-            'test_id'         => $request->test_id,
-            'question_text'   => $request->question_text,
-            'question_text' => $questionData['question_text'],
-        ]);
+        foreach ($request->questions as $questionData) {
+            $lastNumber = Question::where('test_id', $testId)->max('question_number');
 
-
+            $question = Question::create([
+                'test_id' => $request->test_id,
+                'question_text' => $questionData['question_text'],
+                'question_number' => $lastNumber + 1,
+            ]);
+        }
         foreach ($questionData['options']  as $question_index => $option) {
             question_options::create([
                 'question_id'  => $question->id,
                 'option_label' => chr(65 + $question_index),
                 'option_text'  => $option,
-                  'is_correct' => $questionData['correct_option'] == $question_index ? 1 : 0,
+                'is_correct' => $questionData['correct_option'] == $question_index ? 1 : 0,
             ]);
-        }
-};
-    
+        };
 
-        return redirect()->route('welcome');
+        // dd($request->all());
+
+        return redirect()->route('welcome') 
+            
+         ->with('success', 'was created successfully!');
+         ;
     }
 
-    //['test' => $request->test_id]//
+
+
+    
+
     public function logout(Request $request)
     {
         Auth::logout();

@@ -1,3 +1,5 @@
+
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,7 +13,6 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
-</head>
 
 <body id="body-pd">
     <header class="header" id="header">
@@ -29,6 +30,10 @@
 
 
     </header>
+
+
+
+
 
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">

@@ -24,6 +24,7 @@ Route::get('/Test', [testcontroler::class, 'test'])->name('test');
 
 Route::post('/Test', [testcontroler::class, 'testStore'])->name('testcreate');
 
+ Route::put('/Test/{test_id}', [testcontroler::class, 'findupdate'])->name('testupdate');
 Route::put('/Test/{id}', [testcontroler::class, 'testupdate'])->name('testupdate');
 Route::delete('/Test/{id}', [testcontroler::class, 'deleteupdate'])->name('testdelete');
 
@@ -42,10 +43,6 @@ Route::post('/registration', [testcontroler::class, 'registrationStore'])->name(
 // student  database realtion test 
 Route::get('/Question/{test}', [testcontroler::class, 'question'])->name('student.Question');
 // Add  Quiz 
-Route::get('/Quizcreate/{test}', [testcontroler::class, 'Quizcreate'])->name('Quizcreate');
+Route::get('/Quizcreate/{test}/', [testcontroler::class, 'Quizcreate'])->name('Quizcreate');
 Route::post('/Quizstore', [testcontroler::class, 'store'])->name('Quizstore');
-Route::get('/test/{test}/edit', [testcontroler::class, 'edit'])->name('testedit');
-
-
-
 

@@ -1,4 +1,10 @@
 @extends('layouts.dashboard')
+
+<div class="alert alert-info">
+    Questions: <span id="questionCount"></span> /
+    {{ $test->total_questions }}
+
+</div>
 <form action="{{ route('Quizstore') }}" style="margin-top: 5rem !important" method="POST" class="container-md mt-5" id="quizForm">
     @csrf
 
@@ -82,8 +88,33 @@
 
 <script>
     let questionCount = 1;
+    const maxQuestions = "{{ $test->total_questions }}";
+
+    function updateQuestionCountDisplay() {
+        document.getElementById('questionCount').textContent = questionCount;
+    }
+
+    function updateAddButtonState() {
+        const addBtn = document.getElementById('addQ');
+        if (questionCount >= maxQuestions) {
+            addBtn.disabled = true;
+            addBtn.classList.add('disabled');
+            addBtn.title = `Maximum ${maxQuestions} questions allowed`;
+            alert(`You can only add ${maxQuestions} questions`);
+        } else {
+            addBtn.disabled = false;
+            addBtn.classList.remove('disabled');
+            addBtn.title = '';
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        updateQuestionCountDisplay();
+        updateAddButtonState();
+    });
 
     document.getElementById('addQ').addEventListener('click', function() {
+
+
         const container = document.getElementById('questionss');
         const index = questionCount;
 
@@ -156,6 +187,8 @@
 
         container.appendChild(block);
         questionCount++;
+        updateQuestionCountDisplay();
+        updateAddButtonState();
     });
 
     document.addEventListener('click', function(e) {

@@ -183,10 +183,10 @@ public function testStore(Request $request)
 
     public function store(Request $request)
     {
-     
+     dd($request->all());
 
         $request->validate([
-            'test_id'        => 'required|exists:tests,id',
+            'test_id'    => 'required|exists:tests,id',
             'questions.*.question_text' => 'required|string|min:3',
             'questions.*.options' => 'required|array|min:3|max:5',
             'questions.*.correct_option' => 'required|string',
@@ -209,7 +209,7 @@ foreach ($request->questions as $questionData) {
             ]);
         }
 };
-        dd($request->all());
+    
 
         return redirect()->route('welcome');
     }

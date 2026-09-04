@@ -3,11 +3,17 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\testcontroler;
+use App\Http\Controllers\ContactController;
 
 
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
+
+
+
+
+Route::get('/Landing', [testcontroler::class, 'Landing'])->name('Landing');
 
 
 
@@ -29,7 +35,7 @@ Route::post('/login', [testcontroler::class, 'summitLogin']);
 
 // ragistration 
 
-Route::get('/registration ', [testcontroler::class, 'registration']);
+Route::get('/registration', [testcontroler::class, 'registration'])->name('registration');
 Route::post('/registration', [testcontroler::class, 'registrationStore'])->name('register.store');
 
 
@@ -39,3 +45,7 @@ Route::get('/Question/{test}', [testcontroler::class, 'question'])->name('studen
 Route::get('/Quizcreate/{test}', [testcontroler::class, 'Quizcreate'])->name('Quizcreate');
 Route::post('/Quizstore', [testcontroler::class, 'store'])->name('Quizstore');
 Route::get('/test/{test}/edit', [testcontroler::class, 'edit'])->name('testedit');
+
+
+
+

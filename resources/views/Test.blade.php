@@ -19,70 +19,70 @@
 </div>
 
 <div class="row">
-<div class="row">
+    <div class="row">
 
-    @forelse($test as $test)
+        @forelse($test as $test)
 
-<div class="col-md-6 col-lg-3 mb-4">
+        <div class="col-md-6 col-lg-3 mb-4">
 
 
-<div class="modal fade" id="editTest{{ $test->id }}" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
+            <div class="modal fade" id="editTest{{ $test->id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
 
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Test</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Test</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <form action="{{ route('testupdate', $test->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+
+                            <div class="modal-body">
+
+                                <div class="mb-3">
+                                    <label class="form-label">Test Title</label>
+                                    <input type="text" name="title" class="form-control"
+                                        value="{{ $test->title }}">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Description</label>
+                                    <textarea name="description" class="form-control">{{ $test->description }}</textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Duration</label>
+                                    <input type="number" name="duration_minutes" class="form-control"
+                                        value="{{ $test->duration_minutes }}">
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Close
+                                </button>
+
+                                <button type="submit" class="btn btn-primary">
+                                    Update
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
             </div>
 
-            <form action="{{ route('testupdate', $test->id) }}" method="POST">
-                @csrf
-                @method('PUT')
+            <div class="card shadow-sm border-0 rounded-3 h-30" style="min-height: 280px;">
 
-                <div class="modal-body">
+                <div class="card-body p-3">
 
-                    <div class="mb-3">
-                        <label class="form-label">Test Title</label>
-                        <input type="text" name="title" class="form-control"
-                               value="{{ $test->title }}">
-                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
 
-                    <div class="mb-3">
-                        <label class="form-label">Description</label>
-                        <textarea name="description" class="form-control">{{ $test->description }}</textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Duration</label>
-                        <input type="number" name="duration_minutes" class="form-control"
-                               value="{{ $test->duration_minutes }}">
-                    </div>
-
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Close
-                    </button>
-
-                    <button type="submit" class="btn btn-primary">
-                        Update
-                    </button>
-                </div>
-
-            </form>
-
-        </div>
-    </div>
-</div>
-
-    <div class="card shadow-sm border-0 rounded-3 h-30" style="min-height: 280px;">
-
-        <div class="card-body p-3">
-
-            <div class="d-flex justify-content-between align-items-center mb-3">
-
-                <span class="badge rounded-pill
+                        <span class="badge rounded-pill
                     @if($test->status == 'PUBLISHED')
                         bg-success
                     @elseif($test->status == 'DRAFT')
@@ -92,96 +92,96 @@
                     @else
                         bg-secondary
                     @endif">
-                    {{ $test->status }}
-                </span>
+                            {{ $test->status }}
+                        </span>
 
-                <div class="dropdown">
-                    <button type="button"
-                        class="btn btn-sm btn-light rounded-circle"
-                        data-bs-toggle="dropdown">
-                        <i class="bi bi-three-dots-vertical"></i>
-                    </button>
+                        <div class="dropdown">
+                            <button type="button"
+                                class="btn btn-sm btn-light rounded-circle"
+                                data-bs-toggle="dropdown">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </button>
 
-                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                     <li>
-    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editTest{{ $test->id }}">
-        <i class="bi bi-pencil-square text-warning me-2"></i>
-        Edit
-    </a>
-</li>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                <li>
+                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editTest{{ $test->id }}">
+                                        <i class="bi bi-pencil-square text-warning me-2"></i>
+                                        Edit
+                                    </a>
+                                </li>
 
-                        <li>
-                            <form action="{{ route('testdelete', $test->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="dropdown-item text-danger">
-                                    <i class="bi bi-trash me-2"></i>
-                                    Delete
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
+                                <li>
+                                    <form action="{{ route('testdelete', $test->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="bi bi-trash me-2"></i>
+                                            Delete
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
 
-                    
+
+                        </div>
+
+                    </div>
+
+                    <h6 class="card-title fw-semibold text-primary mb-2">
+                        {{ $test->title }}
+                    </h6>
+
+                    <p class="card-text text-muted small mb-3">
+                        {{ $test->description }}
+                    </p>
+
+                    <div class="d-flex gap-2 flex-wrap mb-3">
+
+                        <span class="badge bg-primary">
+                            <i class="bi bi-clock me-1"></i>
+                            {{ $test->duration_minutes }} mins
+                        </span>
+
+                        <span class="badge bg-secondary">
+                            <i class="bi bi-question-circle me-1"></i>
+                            {{ $test->total_questions }} Questions
+                        </span>
+
+                    </div>
+
+                    <small class="text-muted">
+                        <i class="bi bi-calendar3 me-1"></i>
+                        {{ $test->created_at->format('d M Y') }}
+                    </small>
+
+                </div>
+
+                <div class="card-footer bg-transparent border-0 p-3 pt-0 mt-auto">
+
+                    <a class="btn btn-primary w-100"
+                        href="{{ route('Quizcreate', $test->id) }}">
+                        <i class="bi bi-question-circle me-1"></i>
+                        Questions
+                    </a>
+
                 </div>
 
             </div>
 
-            <h6 class="card-title fw-semibold text-primary mb-2">
-                {{ $test->title }}
-            </h6>
+        </div>
 
-            <p class="card-text text-muted small mb-3">
-                {{ $test->description }}
-            </p>
+        @empty
 
-            <div class="d-flex gap-2 flex-wrap mb-3">
-
-                <span class="badge bg-primary">
-                    <i class="bi bi-clock me-1"></i>
-                    {{ $test->duration_minutes }} mins
-                </span>
-
-                <span class="badge bg-secondary">
-                    <i class="bi bi-question-circle me-1"></i>
-                    {{ $test->total_questions }} Questions
-                </span>
-
+        <div class="col-12">
+            <div class="alert alert-info text-center py-5">
+                <i class="bi bi-journal-text fs-1"></i>
+                <p class="mt-3 mb-0">No tests found.</p>
             </div>
-
-            <small class="text-muted">
-                <i class="bi bi-calendar3 me-1"></i>
-                {{ $test->created_at->format('d M Y') }}
-            </small>
-
         </div>
 
-        <div class="card-footer bg-transparent border-0 p-3 pt-0 mt-auto">
-
-            <a class="btn btn-primary w-100"
-                href="{{ route('Quizcreate', $test->id) }}">
-                <i class="bi bi-question-circle me-1"></i>
-                Questions
-            </a>
-
-        </div>
+        @endforelse
 
     </div>
-
-</div>
-
-    @empty
-
-    <div class="col-12">
-        <div class="alert alert-info text-center py-5">
-            <i class="bi bi-journal-text fs-1"></i>
-            <p class="mt-3 mb-0">No tests found.</p>
-        </div>
-    </div>
-
-    @endforelse
-
-</div>
 
 </div>
 
@@ -299,6 +299,11 @@
                             placeholder="Negative marks"
                             required>
                     </div>
+                    <select name="status" required>
+                        <option value="DRAFT">Draft</option>
+                        <option value="PUBLISHED">Published</option>
+                        <option value="CLOSED">Closed</option>
+                    </select>
 
                 </div>
 

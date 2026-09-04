@@ -25,17 +25,17 @@ class testcontroler extends Controller
 
 {
 
-public function Quizcreate($test)
-{
-    $test = Test::findOrFail($test);
+    public function Quizcreate($test)
+    {
+        $test = Test::findOrFail($test);
 
-    $questions = Question::with('options')
-        ->where('test_id', $test->id)
+        $questions = Question::with('options')
+            ->where('test_id', $test->id)
 
-        ->get();
+            ->get();
 
-    return view('teacher.Quizcreate', compact('test', 'questions'));
-}
+        return view('teacher.Quizcreate', compact('test', 'questions'));
+    }
 
 
     public function registration()
@@ -44,6 +44,14 @@ public function Quizcreate($test)
         return view('registration');
     }
 
+
+      public function Landing()
+    {
+
+        return view('Landing');
+    }
+
+    
 
     public function registrationStore(Request $request)
     {
@@ -109,28 +117,28 @@ public function Quizcreate($test)
         return redirect()->route('test')->with('success', 'Test deleted successfully');
     }
 
-    public function testStore(Request $request)
-    {
 
+public function testStore(Request $request)
+{
 
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required',
-            'duration_minutes' => 'required',
-            'total_questions' => 'required',
-            'marks_per_question' => 'required',
-            'negative_marks' => 'required',
-            'status' => 'required',
+  $validated = $request->validate([
+    'title' => 'required|string',
+    'description' => 'required|string',
+    'duration_minutes' => 'required|integer',
+    'total_questions' => 'required|integer',
+    'marks_per_question' => 'required|numeric',
+    'negative_marks' => 'required|numeric',
+    'status' => 'required|string',
+]);
+  
 
+    Test::create($validated);
 
-
-        ]);
-        Test::create($validated);
-        return redirect()
-            ->route('test')
-            ->with('success', 'test store successful!');
-    }
-
+    return redirect()
+        ->route('test')
+        ->with('success', 'test store successful!');
+}    
+  
     public function login()
     {
 
@@ -162,43 +170,48 @@ public function Quizcreate($test)
     }
 
 
-  public function question($test)
-{
-    $test = Test::findOrFail($test);
+    public function question($test)
+    {
+        $test = Test::findOrFail($test);
 
-    $questions = Question::with('options')
-        ->where('test_id', $test->id)
-        ->get();
+        $questions = Question::with('options')
+            ->where('test_id', $test->id)
+            ->get();
 
-    return view(' teacher.question', compact('test', 'questions'));
-}
+        return view(' teacher.question', compact('test', 'questions'));
+    }
 
     public function store(Request $request)
     {
+     
 
         $request->validate([
             'test_id'        => 'required|exists:tests,id',
-            'question_text'  => 'required|string',
-            'options'        => 'required|array|min:3|max:5',
-            'correct_option' => 'required|string|between:0,1',
+            'questions.*.question_text' => 'required|string|min:3',
+            'questions.*.options' => 'required|array|min:3|max:5',
+            'questions.*.correct_option' => 'required|string',
         ]);
 
+foreach ($request->questions as $questionData) {
         $question = Question::create([
             'test_id'         => $request->test_id,
             'question_text'   => $request->question_text,
-            'question_number' => $request->question_number,
+            'question_text' => $questionData['question_text'],
         ]);
 
-        foreach ($request->options as $question_index => $option) {
+
+        foreach ($questionData['options']  as $question_index => $option) {
             question_options::create([
                 'question_id'  => $question->id,
                 'option_label' => chr(65 + $question_index),
                 'option_text'  => $option,
-                'is_correct'   => $request->correct_option == $question_index ? 1 : 0,
+                  'is_correct' => $questionData['correct_option'] == $question_index ? 1 : 0,
             ]);
         }
- 
-       return redirect()->route('welcome');
+};
+        dd($request->all());
+
+        return redirect()->route('welcome');
     }
 
     //['test' => $request->test_id]//
@@ -211,7 +224,4 @@ public function Quizcreate($test)
 
         return redirect('/login');
     }
-
-
-
 }

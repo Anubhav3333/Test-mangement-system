@@ -23,7 +23,7 @@
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#"><i class='bx bx-user-circle'></i> Account</a></li>
                 <li><a class="dropdown-item" href="#"><i class='bx bxs-widget'></i> Settings</a></li>
-                <li><a  class='bx bx-exit'></i> Logout</a></li>
+               
             </ul>
         </div>
 
@@ -54,11 +54,10 @@
                         <span class="nav_name">Subjects</span>
                     </a>
 
-                    <a href="#" class="nav_link">
-                        <i class='bx bx-bookmark nav_icon'></i>
-                        <span class="nav_name">Bookmark</span>
-                    </a>
-
+                   <a href="{{ route('registration') }}" class="nav_link">
+    <i class='bx bx-user nav_icon'></i>
+    <span class="nav_name">My Account</span>
+</a>
                     <a href="#" class="nav_link">
                         <i class='bx bx-folder nav_icon'></i>
                         <span class="nav_name">Files</span>

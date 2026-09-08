@@ -18,3 +18,4 @@ class Question extends Model
         return $this->hasMany(question_options::class, 'question_id');
     }
 }
+

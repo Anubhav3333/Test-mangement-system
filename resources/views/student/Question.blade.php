@@ -1,72 +1,22 @@
 @extends('layouts.dashboard')
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h3 class="mb-0 fw-bold">
-      <li class="nav-item">
-    <span class="d-flex align-items-center gap-2 px-3 py-2">
-    <span class="d-flex align-items-center gap-2 px-3 py-2">
-    <i class="bi bi-person-circle fs-5"></i>
-    <span>
-        <small class="text-muted me-1">YOU ARE</small>
-        <strong class="badge bg-primary rounded-pill">
-            {{ auth()->user()?->role ?? 'Guest' }}
-        </strong>
-    </span>
-</span>
-        
-        <i class="bi bi-journal-text text-primary me-2"></i>Create Test
+        <i class="bi bi-journal-text text-primary me-2"></i>My Tests
     </h3>
-    <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#addTestModal">
+    <!-- <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#addTestModal">
         <i class="bi bi-plus-lg me-1"></i>Add Test
-    </button>
+    </button> -->
 </div>
 
 <div class="row g-4">
-    @forelse($test as $test)
+
+    @forelse($tests as $test)
     <div class="col-md-6 col-lg-4">
         <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden transition-all hover-shadow-lg">
             <div class="card-body p-4">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <span class="badge rounded-pill px-3 py-2 fw-medium
-                            @if($test->status == 'PUBLISHED') bg-success-subtle text-success
-                            @elseif($test->status == 'DRAFT') bg-warning-subtle text-warning-emphasis
-                            @elseif($test->status == 'CLOSED') bg-danger-subtle text-danger
-                            @else bg-secondary-subtle text-secondary
-                            @endif">
-                        <i class="bi bi-circle-fill me-1" style="font-size: 6px; vertical-align: middle;"></i>{{ $test->status }}
-                    </span>
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-light btn-sm rounded-circle border-0" data-bs-toggle="dropdown" style="width: 32px; height: 32px; padding: 0;">
-                            <i class="bi bi-three-dots-vertical"></i>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2">
-                            <li>
-                                <button type="button" class="dropdown-item py-2" data-bs-toggle="modal"
-                                    data-bs-target="#editTestModal"
-                                    data-test-id="{{ $test->id }}"
-                                    data-test-title="{{ $test->title }}"
-                                    data-test-description="{{ $test->description }}"
-                                    data-test-duration="{{ $test->duration_minutes }}"
-                                    data-test-status="{{ $test->status }}">
-                                    <i class="bi bi-pencil-square text-warning me-2"></i>Edit
-                                </button>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider my-1">
-                            </li>
-                            <li>
-                                <form action="{{ route('testdelete', $test->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="dropdown-item py-2 text-danger" onclick="return confirm('Are you sure you want to delete this test?')">
-                                        <i class="bi bi-trash me-2"></i>Delete
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
 
                 <h5 class="card-title fw-bold text-dark mb-2">{{ $test->title }}</h5>
                 <p class="card-text text-secondary mb-4" style="min-height: 48px;">{{ Str::limit($test->description, 90) }}</p>
@@ -87,8 +37,8 @@
             </div>
 
             <div class="card-footer bg-white border-top-0 p-4 pt-0">
-                <a class="btn btn-outline-primary w-100 rounded-pill py-2 fw-medium" href="{{ route('Quizcreate', $test->id) }}">
-                    <i class="bi bi-question-circle me-2"></i>Manage Questions
+                <a class="btn btn-outline-primary w-100 rounded-pill py-2 fw-medium" href="{{ route('QuizAttempt',$test->id) }}">
+                    <i class="bi bi-question-circle me-2"></i> AttemptQuiz
                 </a>
             </div>
         </div>
@@ -110,7 +60,6 @@
     </div>
     @endforelse
 </div>
-
 <div class="modal fade" id="addTestModal" tabindex="-1" aria-labelledby="addTestModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg rounded-4">
@@ -185,77 +134,32 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="editTestModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg rounded-4">
-            <form id="editTestForm" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="modal-header border-bottom-0 pb-0 pt-4 px-4">
-                    <h5 class="modal-title fw-bold">
-                        <i class="bi bi-pencil-square text-warning me-2"></i>Edit Test
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <div class="mb-3">
-                        <label class="form-label fw-medium small text-secondary">Title</label>
-                        <input type="text" name="title" id="editTitle" class="form-control rounded-3" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-medium small text-secondary">Description</label>
-                        <textarea name="description" id="editDescription" class="form-control rounded-3" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-medium small text-secondary">Duration (Minutes)</label>
-                        <input type="number" name="duration_minutes" id="editDuration" class="form-control rounded-3" min="1" required>
-                    </div>
-                    <div class="mb-1">
-                        <label class="form-label fw-medium small text-secondary">Status</label>
-                        <select name="status" id="editStatus" class="form-select rounded-3" required>
-                            <option value="DRAFT">Draft</option>
-                            <option value="PUBLISHED">Published</option>
-                            <option value="CLOSED">Closed</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer border-top-0 px-4 pb-4 pt-0">
-                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary rounded-pill px-4">Update Test</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const editModal = document.getElementById('editTestModal');
+<!-- <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const editModal = document.getElementById('editTestModal');
+    editModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const testId = button.getAttribute('data-test-id');
+        const testTitle = button.getAttribute('data-test-title');
+        const testDescription = button.getAttribute('data-test-description');
+        const testDuration = button.getAttribute('data-test-duration');
+        const testStatus = button.getAttribute('data-test-status');
+
+        document.getElementById('editTitle').value = testTitle;
+        document.getElementById('editDescription').value = testDescription;
+        document.getElementById('editDuration').value = testDuration;
+        document.getElementById('editStatus').value = testStatus;
+
         const form = document.getElementById('editTestForm');
-
-        editModal.addEventListener('show.bs.modal', function(event) {
-            const button = event.relatedTarget;
-
-            const testId = button.getAttribute('data-test-id');
-            const testTitle = button.getAttribute('data-test-title');
-            const testDescription = button.getAttribute('data-test-description');
-            const testDuration = button.getAttribute('data-test-duration');
-            const testStatus = button.getAttribute('data-test-status');
-
-            document.getElementById('editTitle').value = testTitle;
-            document.getElementById('editDescription').value = testDescription;
-            document.getElementById('editDuration').value = testDuration;
-            document.getElementById('editStatus').value = testStatus;
-
-            form.action = "{{ url('/Test') }}/" + testId;
-
-            console.log('Test ID:', testId);
-            console.log('Form Action:', form.action);
-        });
+        form.action = `/tests/${testId}`;
     });
-</script>
+});
+</script> -->
 
 <style>
     .transition-all {

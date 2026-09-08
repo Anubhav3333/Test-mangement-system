@@ -4,33 +4,31 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\testcontroler;
 use App\Http\Controllers\ContactController;
-
+use App\Http\Middleware\Checkrole;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
 
-
-
 Route::get('/Landing', [testcontroler::class, 'Landing'])->name('Landing');
-
-
-
-
+Route::post('/Landing', [testcontroler::class, 'contact'])->name('contact');
 // taste here 
 
+  
 Route::get('/Test', [testcontroler::class, 'test'])->name('test');
 
 Route::post('/Test', [testcontroler::class, 'testStore'])->name('testcreate');
 
- Route::put('/Test/{test_id}', [testcontroler::class, 'findupdate'])->name('testupdate');
+Route::get('/welcome', [testcontroler::class, 'welcome']);
+
 Route::put('/Test/{id}', [testcontroler::class, 'testupdate'])->name('testupdate');
 Route::delete('/Test/{id}', [testcontroler::class, 'deleteupdate'])->name('testdelete');
+// student  database realtion test 
+Route::get('/Question', [testcontroler::class, 'question'])->name('student.Question');
 
 // login 
 Route::get('/login', [testcontroler::class, 'login'])->name('login');
-
 Route::post('/logout', [testcontroler::class, 'logout'])->name('logout');
 Route::post('/login', [testcontroler::class, 'summitLogin']);
 
@@ -40,9 +38,13 @@ Route::get('/registration', [testcontroler::class, 'registration'])->name('regis
 Route::post('/registration', [testcontroler::class, 'registrationStore'])->name('register.store');
 
 
-// student  database realtion test 
-Route::get('/Question/{test}', [testcontroler::class, 'question'])->name('student.Question');
+
 // Add  Quiz 
 Route::get('/Quizcreate/{test}/', [testcontroler::class, 'Quizcreate'])->name('Quizcreate');
 Route::post('/Quizstore', [testcontroler::class, 'store'])->name('Quizstore');
 
+
+// QuizAttempt
+
+Route::get('/QuizAttempt/{test}/', [testcontroler::class, 'QuizAttempt'])->name('QuizAttempt');
+Route::post('/Questionstore', [testcontroler::class, 'Questionstore'])->name('Questionstore');

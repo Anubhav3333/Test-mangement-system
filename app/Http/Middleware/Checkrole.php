@@ -15,13 +15,16 @@ class Checkrole
         if (!$request->user()) {
             return redirect()->route('login')->with('error', 'Please login first');
         }
-
      
         if ($request->user()->role !== 'TEACHER') {
             return redirect()->back()->with('error', 'Only teachers can access this page');
         }
 
         $request->merge(['teacher_id' => auth()->id()]);
+
+ if ($request->user()->role !== 'TEACHER') {
+        return redirect()->back()->with('error', 'Only teachers can access this page');
+        }
 
         return $next($request);
     }

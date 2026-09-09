@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\testcontroler;
@@ -47,4 +46,19 @@ Route::post('/Quizstore', [testcontroler::class, 'store'])->name('Quizstore');
 // QuizAttempt
 
 Route::get('/QuizAttempt/{test}/', [testcontroler::class, 'QuizAttempt'])->name('QuizAttempt');
+
 Route::post('/Questionstore', [testcontroler::class, 'Questionstore'])->name('Questionstore');
+
+// attempt view
+
+Route::get('/attempts', [testcontroler::class, 'attempts'])->name('attempts');
+
+Route::get('/attempts/{attempt}/answers', [testcontroler::class, 'attemptAnswers'])
+    ->name('attempts.answers');
+
+
+
+Route::get('/studentResult', [testcontroler::class, 'studentResult'])
+    ->name('attempts.answers');
+
+

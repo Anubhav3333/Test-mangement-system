@@ -14,8 +14,7 @@
         </strong>
     </span>
 </span>
-        
-        <i class="bi bi-journal-text text-primary me-2"></i>Create Test
+<i class="bi bi-journal-text text-primary me-2"></i>Create Test
     </h3>
     <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#addTestModal">
         <i class="bi bi-plus-lg me-1"></i>Add Test

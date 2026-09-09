@@ -7,6 +7,7 @@ use App\Models\Test;
 use App\Models\Question;
 use App\Models\Contacts;
 use App\Models\question_options;
+use App\Http\Controllers\test_attempts;
 use App\Models\QuestionOption;
 use App\Models\TestAttempt;
 use App\Models\TestAttemptAnswer;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Psr7\Query;
 
 class testcontroler extends Controller
@@ -49,9 +51,6 @@ class testcontroler extends Controller
 
         return view('student.QuizAttempt', compact('test', 'questions'));
     }
-
-
-
 
 
     public function registration()
@@ -248,71 +247,70 @@ class testcontroler extends Controller
                 'is_correct' => $questionData['correct_option'] == $question_index ? 1 : 0,
             ]);
         };
-
-        // dd($request->all());
-
         return redirect()->route('welcome')
 
             ->with('success', 'was created successfully!');;
     }
-    public function store(Request $request)
-    {
 
-        $validated = $request->validate([
-            'test_id' => 'required|exists:tests,id',
-            'answers' => 'required|array',
-            'answers.*' => 'required|exists:question_options,id',
-        ]);
+ public function store(Request $request)
+{
+    $validated = $request->validate([
+        'test_id' => 'required|exists:tests,id',
+        'answers' => 'required|array',
+        'answers.*' => 'required|exists:question_options,id',
+    ]);
 
-        $testId = $validated['test_id'];
-        $answers = $validated['answers'];
-        $studentId = auth()->id();
+    $testId = $validated['test_id'];
+    $answers = $validated['answers'];
+    $studentId = auth()->id();
 
-
-        if (!$studentId) {
-            \Log::warning('Quiz submission rejected: no authenticated student');
-            return redirect()->back()->with('error', 'You must be logged in to submit a quiz.');
-        }
-
-        try {
-            // Step 1: Create the attempt record
-            $attempt = TestAttempt::create([
-                'test_id' => $testId,
-                'student_id' => $studentId,
-                'started_at' => Carbon::now(),
-                'submitted_at' => Carbon::now(),
-                'expires_at' => Carbon::now()->addHours(24),
-                'status' => 'SUBMITTED',
-                'score' => 0,
-                'correct_count' => 0,
-                'wrong_count' => 0,
-                'unanswered_count' => 0,
-            ]);
-
-            foreach ($answers as $questionId => $selectedOptionId) {
-                TestAttemptAnswer::create([
-                    'attempt_id' => $attempt->id,
-                    'question_id' => $questionId,
-                    'selected_option_id' => $selectedOptionId,
-                    'is_answered' => 1,
-                    'is_correct' => null,
-                    'marks_awarded' => 0,
-                    'answered_at' => Carbon::now(),
-                ]);
-            }
-            return redirect('/Question')
-                ->with('success', 'Quiz answers submitted successfully!')
-                ->with('attempt_id', $attempt->id);
-        } catch (\Exception $e) {
-            \Log::error('Quiz submission failed: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            return redirect()->back()
-                ->with('error', 'Error submitting quiz: ' . $e->getMessage());
-        }
+    if (!$studentId) {
+        \Log::warning('Quiz submission rejected: no authenticated student');
+        return redirect()->back()->with('error', 'You must be logged in to submit a quiz.');
     }
 
+    try {
+        $attempt = TestAttempt::create([
+            'test_id' => $testId,
+            'student_id' => $studentId,
+            'started_at' => Carbon::now(),
+            'submitted_at' => Carbon::now(),
+            'expires_at' => Carbon::now()->addHours(24),
+            'status' => 'SUBMITTED',
+            'score' => 0,
+            'correct_count' => 0,
+            'wrong_count' => 0,
+            'unanswered_count' => 0,
+        ]);
+
+        foreach ($answers as $questionId => $selectedOptionId) {
+
+            $selectedOption = question_options::find($selectedOptionId);
+
+            TestAttemptAnswer::create([
+                'attempt_id' => $attempt->id,
+                'question_id' => $questionId,
+                'selected_option_id' => $selectedOptionId,
+                'is_answered' => 1,
+                'is_correct' => $selectedOption->is_correct,
+                'answered_at' => Carbon::now(),
+            ]);
+        }
+
+        return redirect('/Question')
+            ->with('success', 'Quiz answers submitted successfully!')
+            ->with('attempt_id', $attempt->id);
+
+    } catch (\Exception $e) {
+
+        \Log::error('Quiz submission failed: ' . $e->getMessage(), [
+            'trace' => $e->getTraceAsString(),
+        ]);
+
+        return redirect()->back()
+            ->with('error', 'Error submitting quiz: ' . $e->getMessage());
+    }
+}
 
 
 
@@ -324,5 +322,54 @@ class testcontroler extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login');
+        }
+
+//   this is for  final qviz 
+ 
+         public function attemptAnswers($attemptId)
+{
+    $answers = TestAttemptAnswer::where('attempt_id', $attemptId)
+        ->with(['question', 'selectedOption'])
+        ->get();
+
+
+    return view('teacher.attemptAnswers', compact('answers'));
+}
+
+
+//  this is  table logic 
+
+public function attempts(Request $request)
+{
+    $attempts = DB::select("
+        SELECT 
+            test_attempts.id,
+            users.name AS student_name,
+            tests.title AS test_name,
+            test_attempts.score,
+            test_attempts.status,
+            test_attempts.started_at
+        FROM test_attempts
+        JOIN users 
+            ON users.id = test_attempts.student_id
+        JOIN tests 
+            ON tests.id = test_attempts.test_id
+        ORDER BY test_attempts.id DESC
+    ");
+
+    return view('teacher.attempts', compact('attempts'));
+
     }
+
+        public function studentResult($attemptId)
+    {
+
+       $Studentattempt = TestAttemptAnswer::where('attempt_id', $attemptId)
+        ->with(['question', 'selectedOption'])
+        ->get();   
+        return view('student.studentResult', compact('Studentattempt'));
+    }
+
+ 
+
 }

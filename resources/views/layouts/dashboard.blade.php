@@ -487,9 +487,10 @@
                         <i class='bx bx-chalkboard nav_icon'></i>
                         <span class="nav_name">Teacher</span>
                     </a>
-
-          
-             
+                        <a href="{{ route('attempts') }}" class="nav_link">
+                        <i class='bi bi-book nav_icon'></i>
+                        <span class="nav_name">Student Attempts</span>
+                    </a>
                     @endif
 
 

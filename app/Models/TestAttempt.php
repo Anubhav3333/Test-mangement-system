@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class TestAttempt extends Model
 {
     protected $table = 'test_attempts';
+    
     public $timestamps = false;
     protected $fillable = [
         'test_id',
@@ -20,7 +21,6 @@ class TestAttempt extends Model
         'score'
 
     ];
-
     protected $casts = [
         'started_at' => 'datetime',
         'submitted_at' => 'datetime',
@@ -31,30 +31,25 @@ class TestAttempt extends Model
     /**
      * Get the test associated with this attempt
      */
+
     public function test(): BelongsTo
     {
         return $this->belongsTo(Test::class);
     }
 
-    /**
-     * Get the student who took this test
-     */
+   
     public function student(): BelongsTo
     {
         return $this->belongsTo(User::class, 'student_id');
     }
 
-    /**
-     * Get all answers for this attempt
-     */
+   
     public function answers(): HasMany
     {
         return $this->hasMany(TestAttemptAnswer::class, 'attempt_id');
     }
 
-    /**
-     * Get only correct answers
-     */
+    
     public function correctAnswers()
     {
         return $this->answers()->where('is_correct', 1);

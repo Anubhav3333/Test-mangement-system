@@ -4,7 +4,10 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h3 class="mb-0 fw-bold">
-        <i class="bi bi-journal-text text-primary me-2"></i>My Tests
+        <i class="bi bi-journal-text text-primary me-4"></i>My Tests
+        <strong class="badge bg-primary ">
+              Wellcome <br>{{ auth()->user()?->name ?? 'Guest' }}
+        </strong>
     </h3>
     <!-- <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#addTestModal">
         <i class="bi bi-plus-lg me-1"></i>Add Test
@@ -139,27 +142,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const editModal = document.getElementById('editTestModal');
-    editModal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget;
-        const testId = button.getAttribute('data-test-id');
-        const testTitle = button.getAttribute('data-test-title');
-        const testDescription = button.getAttribute('data-test-description');
-        const testDuration = button.getAttribute('data-test-duration');
-        const testStatus = button.getAttribute('data-test-status');
-
-        document.getElementById('editTitle').value = testTitle;
-        document.getElementById('editDescription').value = testDescription;
-        document.getElementById('editDuration').value = testDuration;
-        document.getElementById('editStatus').value = testStatus;
-
-        const form = document.getElementById('editTestForm');
-        form.action = `/tests/${testId}`;
-    });
-});
-</script> -->
 
 <style>
     .transition-all {

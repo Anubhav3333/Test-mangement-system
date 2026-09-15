@@ -50,7 +50,7 @@ class TestAttempt extends Model
     }
 
     
-    public function correctAnswers()
+    public function ThiscorrectAnswers()
     {
         return $this->answers()->where('is_correct', 1);
     }
@@ -87,4 +87,6 @@ class TestAttempt extends Model
     {
         return $this->expires_at->isPast();
     }
+
+    
 }

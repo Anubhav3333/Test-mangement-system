@@ -70,9 +70,6 @@
 </div>
 
 <style>
-    /* ================================
-   Student Attempts — White & Green
-================================ */
 
 .attempts-page {
     --primary-green: #168a55;

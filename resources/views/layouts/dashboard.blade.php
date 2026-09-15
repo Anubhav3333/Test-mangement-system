@@ -431,40 +431,96 @@
 <body id="body-pd">
 
     <!-- Header -->
-<header class="header" id="header">
-    <div class="header_toggle" id="header-toggle">
-        <i class='bx bx-menu'></i>
-    </div>
-
-    <div class="header_profile">
-       
-        <div class="dropdown">
-            <button type="button" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://res.cloudinary.com/dpjpz26qm/image/upload/v1674890312/codepen/avatar/man_1_cpqkhl.png" alt="Profile">
-                <i class='bx bx-chevron-down text-secondary d-none d-sm-inline'></i>
-            </button>
-
-            <ul class="dropdown-menu dropdown-menu-end">
-                <li>
-                 <span class="me-3 text-secondary">
-                Wellcome  to {{ $test->teacher?->name ?? 'Teacher not found' }}
-        </span>
-     </a>
-                </li>
-
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-
-                <li>
-                    <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                        <i class='bx bx-log-out'></i> Sign Out
-                    </a>
-                </li>
-            </ul>
+    <header class="header" id="header">
+        <div class="header_toggle" id="header-toggle">
+            <i class='bx bx-menu'></i>
         </div>
-    </div>
-</header>
+        <div class="header_profile">
+            <div class="dropdown">
+                <button
+                    type="button"
+                    class="btn btn-light border rounded-circle p-1 shadow-sm dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <img
+                        src="https://res.cloudinary.com/dpjpz26qm/image/upload/v1674890312/codepen/avatar/man_1_cpqkhl.png"
+                        alt="Profile"
+                        width="42"
+                        height="42"
+                        class="rounded-circle">
+
+                    <i class="bx bx-chevron-down text-secondary d-none d-sm-inline"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4 p-2 mt-2">
+                    @auth
+                    <li>
+                        <div class="d-flex align-items-center gap-3 px-3 py-2">
+                            <img
+                                src="https://res.cloudinary.com/dpjpz26qm/image/upload/v1674890312/codepen/avatar/man_1_cpqkhl.png"
+                                alt="{{ ($test ?? collect())->first()?->teacher?->name ?? auth()->user()?->name ?? 'User' }}"
+                                width="45"
+                                height="45"
+                                class="rounded-circle border">
+
+                            <div>
+                                <h6 class="mb-1 fw-semibold">
+                                    {{ ($test ?? collect())->first()?->teacher?->name
+                            ?? auth()->user()?->name
+                            ?? 'User' }}
+                                </h6>
+
+                                <small class="text-secondary">
+                                    My Account
+                                </small>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <button
+                                type="submit"
+                                class="dropdown-item text-danger rounded-3 d-flex align-items-center gap-2 py-2">
+                                <i class="bx bx-log-out fs-5"></i>
+                                <span>Sign Out</span>
+                            </button>
+                        </form>
+                    </li>
+                    @else
+                    <li>
+                        <a
+                            href="{{ route('login') }}"
+                            class="dropdown-item text-primary rounded-3 d-flex align-items-center gap-2 py-2 fw-semibold">
+                            <i class="bx bx-log-in fs-5"></i>
+                            <span>Login</span>
+                        </a>
+                    </li>
+                    @endauth
+                </ul>
+                <style>
+                    .header_profile .dropdown-toggle {
+                        background: transparent !important;
+                        border: none !important;
+                        padding: 3px !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        gap: 1.5rem !important;
+                        cursor: pointer !important;
+                    }
+                </style>
+
+                </ul>
+            </div>
+        </div>
+        </div>
+        </div>
+    </header>
     <!-- Sidebar -->
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">
@@ -480,6 +536,12 @@
                         <i class='bx bx-grid-alt nav_icon'></i>
                         <span class="nav_name">Student Dashboard</span>
                     </a>
+
+
+                    <a href="{{ route('student.attempts') }}" class="nav_link">
+                        <i class='bx bx-file nav_icon'></i>
+                        <span class="nav_name">My Attempts</span>
+                    </a>
                     @endif
                     @if(auth()->check() && auth()->user()->role === 'TEACHER')
 
@@ -487,22 +549,21 @@
                         <i class='bx bx-chalkboard nav_icon'></i>
                         <span class="nav_name">Teacher</span>
                     </a>
-                        <a href="{{ route('attempts') }}" class="nav_link">
+                    <a href="{{ route('attempts') }}" class="nav_link">
                         <i class='bi bi-book nav_icon'></i>
                         <span class="nav_name">Student Attempts</span>
-                    </a>
-                    @endif
 
+                        <a href="{{ route('doubt') }}" class="nav_link">
+                            <i class="bi bi-chat-left-text nav_icon"></i>
+                            <span class="nav_name">Student Queries</span>
+                        </a>
 
-                    <a href="/Landing" class="nav_link">
-                        <i class='bx bx-folder nav_icon'></i>
-                        <span class="nav_name">Home page</span>
-                    </a>
+                        @endif
+                        <a href="{{route('welcome')}}" class="nav_link">
+                            <i class='bx bx-folder nav_icon'></i>
+                            <span class="nav_name">Home page</span>
+                        </a>
 
-                    <!-- <a href="#" class="nav_link">
-                        <i class='bx bx-bar-chart-alt-2 nav_icon'></i>
-                        <span class="nav_name">Student</span>
-                    </a> -->
                 </div>
             </div>
 
@@ -514,6 +575,7 @@
             </div>
         </nav>
     </div>
+
 
     <!-- Main Content -->
     <main class="main-content">

@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Test extends Model  // ✅ Uppercase, extends Model not Authenticatable
+class Test extends Model  
 {
     use HasFactory;
 
-    protected $table = 'tests';  // Specify table name
+    protected $table = 'tests';  
 
     protected $fillable = [
         'teacher_id',    
@@ -34,4 +34,10 @@ class Test extends Model  // ✅ Uppercase, extends Model not Authenticatable
     {
         return $this->belongsTo(User::class, 'teacher_id');
     }
+
+
+public function attempts()
+{
+    return $this->hasMany(TestAttempt::class, 'test_id');
+}
 }

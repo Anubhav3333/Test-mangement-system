@@ -2,8 +2,9 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
-use App\Http\Middleware\CheckRole;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\CheckStudent;
+use App\Http\Middleware\CheckTeacher;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,9 +13,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        
         $middleware->alias([
-            'teacher' => \App\Http\Middleware\Checkrole::class,
+            'CheckStudent' => CheckStudent::class,
+            'CheckTeacher' => CheckTeacher::class,
         ]);
     })
-
-    ->withExceptions(function (Exceptions $exceptions): void {})->create();
+    ->withExceptions(function (Exceptions $exceptions): void {
+    
+    })
+    ->create();

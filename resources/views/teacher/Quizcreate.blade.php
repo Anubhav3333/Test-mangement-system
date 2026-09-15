@@ -98,6 +98,47 @@
     </form>
 </div>
 
+
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+const T = Swal.mixin({ toast: true, position: 'top-end', timer: 1500, showConfirmButton: false });
+
+document.addEventListener('input', e => {
+    if (e.target.name?.includes('question_text') && e.target.value.length > 10) 
+        T.fire({ icon: 'success', title: '✅ Added' });
+});
+
+document.addEventListener('click', e => {
+    if (e.target.closest('.add-option')) { e.preventDefault(); T.fire({ icon: 'success', title: '➕ Option' }); }
+    if (e.target.closest('#addQ')) { e.preventDefault(); T.fire({ icon: 'success', title: '➕ Question' }); }
+    if (e.target.closest('.delete-option') || e.target.closest('.delete-question')) {
+        e.preventDefault();
+        Swal.fire({ icon: 'warning', title: 'Delete?', showCancelButton: true }).then(r => {
+            if (r.isConfirmed) T.fire({ icon: 'error', title: '🗑️ Deleted' });
+        });
+    }
+});
+
+document.getElementById('quizForm')?.addEventListener('submit', e => {
+    e.preventDefault();
+   Swal.fire({
+    icon: 'success',
+    title: 'Question Saved Successfully!'
+}).then(() => e.target.submit());
+});
+</script>
+
+
+
 <script>
 let questionCount = 1;
 const maxQuestions = parseInt("{{ $test->total_questions }}");

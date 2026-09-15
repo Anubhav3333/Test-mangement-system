@@ -28,9 +28,7 @@ class TestAttemptAnswer extends Model
         'updated_at' => 'datetime',
     ];
 
-    /**
-     * Get the test attempt this answer belongs to
-     */
+   
     public function attempt(): BelongsTo
     {
         return $this->belongsTo(TestAttempt::class, 'attempt_id');
@@ -44,33 +42,26 @@ class TestAttemptAnswer extends Model
         return $this->belongsTo(Question::class);
     }
 
-    /**
-     * Get the selected option
-     */
+    
+
     public function selectedOption(): BelongsTo
     {
         return $this->belongsTo(question_options::class, 'selected_option_id');
     }
 
-    /**
-     * Get the correct option for this question
-     */
+   
     public function correctOption()
     {
         return $this->question->options()->where('is_correct', 1)->first();
     }
 
-    /**
-     * Check if answer is correct
-     */
+  
     public function isCorrect(): bool
     {
         return $this->is_correct ?? false;
     }
 
-    /**
-     * Check if question was answered
-     */
+   
     public function isAnswered(): bool
     {
         return $this->is_answered ?? false;

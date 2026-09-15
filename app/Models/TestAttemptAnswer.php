@@ -9,7 +9,7 @@ class TestAttemptAnswer extends Model
 {
     protected $table = 'attempt_answers';
 
-    public $timestamps = false; // We manage timestamps manually
+    public $timestamps = false; 
 
     protected $fillable = [
         'attempt_id',

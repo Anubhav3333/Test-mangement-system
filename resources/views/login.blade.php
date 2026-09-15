@@ -6,6 +6,7 @@
         background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.22), transparent 30%), radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.22), transparent 28%), linear-gradient(135deg, #0f172a 0%, #111827 45%, #020617 100%);
     }
 </style>
+
 <form method="POST" action="/login">
     @csrf
 

@@ -29,7 +29,7 @@
             aria-label="Slide 3"></button>
     </div>
 
-    {{-- Carousel Slides --}}
+   
     <div class="carousel-inner">
 
         {{-- Slide 1 --}}
@@ -154,7 +154,7 @@
 
     </div>
 
-    {{-- Previous Button --}}
+
     <button class="carousel-control-prev"
         type="button"
         data-bs-target="#heroCarousel"
@@ -166,7 +166,6 @@
         </span>
     </button>
 
-    {{-- Next Button --}}
     <button class="carousel-control-next"
         type="button"
         data-bs-target="#heroCarousel"
@@ -178,7 +177,7 @@
         </span>
     </button>
 </div>
-{{-- FEATURES --}}
+
 <section id="features"
     class="py-5 bg-light"
     data-aos="fade-up"
@@ -202,8 +201,6 @@
         </div>
 
         <div class="row g-4">
-
-            {{-- Feature 1 --}}
             <div class="col-md-4"
                 data-aos="fade-up"
                 data-aos-delay="100">
@@ -222,8 +219,6 @@
                     </p>
                 </div>
             </div>
-
-            {{-- Feature 2 --}}
             <div class="col-md-4"
                 data-aos="fade-up"
                 data-aos-delay="200">
@@ -243,7 +238,6 @@
                 </div>
             </div>
 
-            {{-- Feature 3 --}}
             <div class="col-md-4"
                 data-aos="fade-up"
                 data-aos-delay="300">
@@ -267,8 +261,6 @@
     </div>
 </section>
 
-
-{{-- STATISTICS --}}
 <section class="py-5 statistics-section"
     data-aos="fade-up">
 
@@ -321,7 +313,7 @@
 
 
 
-{{-- TESTIMONIALS --}}
+
 <section class="py-5 bg-light">
     <div class="container py-4">
 
@@ -343,7 +335,7 @@
 
         <div class="row g-4 justify-content-center">
 
-            {{-- Testimonial 1 --}}
+       
             <div class="col-md-5"
                 data-aos="fade-right"
                 data-aos-delay="100">
@@ -380,7 +372,6 @@
                 </div>
             </div>
 
-            {{-- Testimonial 2 --}}
             <div class="col-md-5"
                 data-aos="fade-left"
                 data-aos-delay="200">
@@ -422,7 +413,7 @@
 </section>
 
 
-{{-- BLOG SECTION --}}
+
 <section id="blog" class="py-5 bg-light">
     <div class="container py-4">
 
@@ -445,7 +436,7 @@
 
         <div class="row g-4">
 
-            {{-- Blog Card 1 --}}
+   
             <div class="col-md-4"
                 data-aos="fade-up"
                 data-aos-delay="100">
@@ -480,7 +471,7 @@
                 </div>
             </div>
 
-            {{-- Blog Card 2 --}}
+           
             <div class="col-md-4"
                 data-aos="fade-up"
                 data-aos-delay="200">

@@ -3,7 +3,7 @@
 
 <div class="container py-4">
 
-    {{-- Page heading --}}
+
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
         <h3 class="mb-0 fw-bold d-flex flex-wrap align-items-center gap-2">
             <i class="bi bi-journal-text text-primary"></i>
@@ -29,14 +29,12 @@
         ->latest('id')
         ->first();
         @endphp
-
-
         <div
             class="col-12 col-md-6 col-lg-4 d-flex test-card-animate"
             style="animation-delay: {{ $loop->index * 150 }}ms;">
             <div class="card quiz-card w-100 h-100 border-0 shadow-sm rounded-4 overflow-hidden">
 
-             <!-- Card body  -->
+            <!-- Card body  -->
                 <div class="card-body p-3 p-md-4 d-flex flex-column">
 
                     <h5 class="card-title fw-bold text-dark mb-2 text-break">

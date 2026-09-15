@@ -1,4 +1,6 @@
+
 @extends('layouts.dashboard')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <div class="container py-4">
 
     <div class="row justify-content-center">
@@ -137,8 +139,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
         title: 'Question Submitted!',
         text: 'Your question has been submitted successfully.',
         confirmButtonText: 'OK',
-        confirmButtonColor: '#0d6efd'
-    }).then(() => {
+        confirmButtonColor: '#0d6efd'    }).then(() => {
         this.submit();
     });
 

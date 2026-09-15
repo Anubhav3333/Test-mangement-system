@@ -99,23 +99,9 @@
 </div>
 
 
-
-
-
-
-
-
-
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
 const T = Swal.mixin({ toast: true, position: 'top-end', timer: 1500, showConfirmButton: false });
-
-document.addEventListener('input', e => {
-    if (e.target.name?.includes('question_text') && e.target.value.length > 10) 
-        T.fire({ icon: 'success', title: '✅ Added' });
-});
 
 document.addEventListener('click', e => {
     if (e.target.closest('.add-option')) { e.preventDefault(); T.fire({ icon: 'success', title: '➕ Option' }); }

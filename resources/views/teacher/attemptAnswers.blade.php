@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-
+ 
 <style>
     :root {
         --green-700: #137a48;

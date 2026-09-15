@@ -23,10 +23,11 @@ class ContactController extends Controller
             'message' => 'required|string',
         ]);
        
+  
         Contacts::create($form);
 
 
-        return back()->with('success', 'Your message has been sent successfully!');
+        return redirect('./')->with('success', 'Your message has been sent successfully!');
     }
 
    public function doubt()

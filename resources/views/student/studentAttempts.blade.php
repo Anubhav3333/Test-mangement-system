@@ -1,107 +1,209 @@
 @extends('layouts.dashboard')
 <main class="container py-4 py-md-5">
     <header class="card result-header border-0 shadow-sm rounded-4 mb-4">
-        <div class="card-body p-4 p-lg-5">
-            <div class="row align-items-center g-4">
-                <div class="col-lg-8">
-                    <span class="badge bg-primary-subtle text-primary rounded-pill mb-3 px-3 py-2">
-                        QUIZ RESULT
-                    </span>
 
-                    <h1 class="display-6 fw-bold mb-3">
-                        {{auth()->user()->name}} Result
-                    </h1>
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-body p-4 p-lg-5">
 
+                <div class="row align-items-center g-4">
 
+                    <!-- LEFT SIDE -->
+                    <div class="col-lg-8">
 
-                    <div class="progress rounded-pill mt-4" style="height: 10px;">
-                        <div
-                            id="scoreProgressBar"
-                            class="progress-bar rounded-pill bg-{{ $result === 'Pass' ? 'success' : 'danger' }}"
-                            role="progressbar"
-                            data-score="{{ min(100, max(0, $scorePercentage)) }}"
-                            style="width: 0%;"
-                            aria-valuemin="0"
-                            aria-valuemax="100"></div>
-                    </div>
-                </div>
+                        <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 mb-3">
+                            <i class="bi bi-award-fill me-1"></i>
+                            QUIZ RESULT
+                        </span>
 
-                <div class="col-lg-4">
-                    <div class="alert alert-primary border-0 shadow-sm rounded-4 mb-0">
-                        <h4 class="alert-heading fw-bold mb-3">
-                            <i class="bi bi-bar-chart-fill me-2"></i>
-                            Score Summary
-                        </h4>
+                        <h1 class="fw-bold mb-2">
+                            {{ auth()->user()->name }}'s Result
+                        </h1>
 
-                        <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-                            <span>Total Questions:</span>
-                            <strong>{{ $attempt->test->total_questions }}</strong>
-                        </div>
+                        <p class="text-muted mb-4">
+                            Here is your performance summary for this quiz.
+                        </p>
 
-                        <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-                            <span>Attempted:</span>
-                            <strong>
-                                {{ $totalAnswers }} / {{ $attempt->test->total_questions }}
-                            </strong>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-                            <span>Correct:</span>
-                            <strong>{{ $correctCount }}</strong>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-                            <span>Wrong:</span>
-                            <strong>{{ $totalAnswers -$correctCount }}</strong>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-                            <span>Unanswered:</span>
-                            <strong>
-                                {{ max(0, $attempt->test->total_questions - $totalAnswers) }}
-                            </strong>
-                        </div>
-
-                        <hr>
-
-                        <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-                            <span>Score:</span>
-                            <strong>
-                                {{ number_format($score, 2) }}
-                                
-                                {{ number_format($totalMarks, 2) }}
-                            </strong>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-                            <span>Percentage:</span>
-                            <strong>{{ number_format($scorePercentage, 2) }}%</strong>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-                            <span>Passing Marks:</span>
-                            <strong>{{ number_format($passingMarks, 2) }}</strong>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center gap-3">
-                            <span>Result:</span>
+                        <!-- Result Status -->
+                        <div class="d-flex align-items-center gap-3 mb-4">
 
                             @if ($result === 'Pass')
-                            <span class="badge bg-success rounded-pill px-3 py-2">
-                                <i class="bi bi-check-circle-fill me-1"></i>
-                                Pass
-                            </span>
+                            <div class="rounded-circle bg-success-subtle text-success d-flex align-items-center justify-content-center"
+                                style="width:55px;height:55px;">
+                                <i class="bi bi-check-lg fs-3"></i>
+                            </div>
+
+                            <div>
+                                <small class="text-muted d-block">Final Result</small>
+                                <h4 class="fw-bold text-success mb-0">Passed</h4>
+                            </div>
                             @else
-                            <span class="badge bg-danger rounded-pill px-3 py-2">
-                                <i class="bi bi-x-circle-fill me-1"></i>
-                                Fail
-                            </span>
+                            <div class="rounded-circle bg-danger-subtle text-danger d-flex align-items-center justify-content-center"
+                                style="width:55px;height:55px;">
+                                <i class="bi bi-x-lg fs-3"></i>
+                            </div>
+
+                            <div>
+                                <small class="text-muted d-block">Final Result</small>
+                                <h4 class="fw-bold text-danger mb-0">Failed</h4>
+                            </div>
                             @endif
+
                         </div>
+
+                        <!-- Percentage -->
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-semibold">Overall Performance</span>
+
+                            <strong class="text-{{ $result === 'Pass' ? 'success' : 'danger' }}">
+                              
+                            </strong>
+                        </div>
+                  
                     </div>
+
+
+                    <!-- RIGHT SIDE -->
+                    <div class="col-lg-4">
+
+                        <div class="bg-light rounded-4 p-4">
+
+                            <div class="d-flex align-items-center gap-2 mb-4">
+                                <div class="bg-primary-subtle text-primary rounded-3 p-2">
+                                    <i class="bi bi-bar-chart-fill"></i>
+                                </div>
+
+                                <h5 class="fw-bold mb-0">
+                                    Score Summary
+                                </h5>
+                            </div>
+
+
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="text-muted">
+                                    Total Questions
+                                </span>
+                                <strong>
+                                    {{ $attempt->test->total_questions }}
+                                </strong>
+                            </div>
+
+
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="text-muted">
+                                    Attempted
+                                </span>
+                                <strong>
+                                    {{ $totalAnswers }} / {{ $attempt->test->total_questions }}
+                                </strong>
+                            </div>
+
+
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="text-muted">
+                                    Correct
+                                </span>
+                                <strong class="text-success">
+                                    {{ $correctCount }}
+                                </strong>
+                            </div>
+
+
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="text-muted">
+                                    Wrong
+                                </span>
+                                <strong class="text-danger">
+                                    {{ $totalAnswers - $correctCount }}
+                                </strong>
+                            </div>
+
+
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="text-muted">
+                                    Unanswered
+                                </span>
+                                <strong>
+                                    {{ max(0, $attempt->test->total_questions - $totalAnswers) }}
+                                </strong>
+                            </div>
+
+
+                            <hr>
+
+
+                            <!-- Score -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-muted">
+                                    Score
+                                </span>
+
+                                <strong class="fs-5">
+                                    {{ number_format($score, 2) }}
+                                    <span class="text-muted fs-6">
+                                        / {{ number_format($totalMarks, 2) }}
+                                    </span>
+                                </strong>
+                            </div>
+
+
+                            <!-- Percentage -->
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="text-muted">
+                                    Percentage
+                                </span>
+
+                                <strong>
+                                    {{ number_format($scorePercentage, 2) }}%
+                                </strong>
+                            </div>
+
+
+                            <!-- Passing Marks -->
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="text-muted">
+                                    Passing Marks
+                                </span>
+
+                                <strong>
+                                    {{ number_format($passingMarks, 2) }}
+                                </strong>
+                            </div>
+
+
+                            <!-- Result -->
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <span class="text-muted">
+                                    Result
+                                </span>
+
+                                @if ($result === 'Pass')
+
+                                <span class="badge bg-success-subtle text-success rounded-pill px-3 py-2">
+                                    <i class="bi bi-check-circle-fill me-1"></i>
+                                    PASS
+                                </span>
+
+                                @else
+
+                                <span class="badge bg-danger-subtle text-danger rounded-pill px-3 py-2">
+                                    <i class="bi bi-x-circle-fill me-1"></i>
+                                    FAIL
+                                </span>
+
+                                @endif
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
+
             </div>
         </div>
+
     </header>
 
     <div class="card border-0 shadow-sm rounded-4">

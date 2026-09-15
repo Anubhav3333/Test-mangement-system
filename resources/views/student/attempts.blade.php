@@ -3,7 +3,7 @@
 
 <div class="container py-4 py-md-5">
 
-    {{-- Page header --}}
+
     <div class="card page-header-animate border-0 shadow-sm rounded-4 mb-4">
         <div class="card-body p-4">
 
@@ -71,7 +71,7 @@
                                     style="animation-delay: {{ 400 + ($loop->index * 120) }}ms;"
                                 >  
 
-                                   {{-- Serial number --}}
+                            
                                     <td class="px-4 text-secondary fw-semibold">
                                         {{ $loop->iteration }}
                                     </td>
@@ -84,7 +84,7 @@
                                                 class="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
                                                 style="width: 42px; height: 42px;"
                                             >
-                                                📝
+                                                
                                             </div>
 
                                             <div>
@@ -110,7 +110,6 @@
                                             </span>
 
                                         @else
-
                                             <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill px-3 py-2">
                                                 <i class="bi bi-hourglass-split me-1"></i>
                                                 {{ ucfirst($attempt->status) }}
@@ -153,7 +152,7 @@
 
             </div>
 
-            {{-- Table footer --}}
+           
             <div class="card-footer bg-white border-top p-3">
                 <p class="text-secondary small text-center mb-0">
                     Showing {{ count($attempts) }}
@@ -165,7 +164,7 @@
 
     @else
 
-        {{-- Empty state --}}
+    
         <div class="card empty-state-animate border-0 shadow-sm rounded-4">
 
             <div class="card-body text-center py-5">

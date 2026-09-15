@@ -1,9 +1,6 @@
 @extends('layouts.dashboard')
 
-
 <div class="container py-4 py-md-5">
-
-
     <div class="card page-header-animate border-0 shadow-sm rounded-4 mb-4">
         <div class="card-body p-4">
 

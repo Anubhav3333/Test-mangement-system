@@ -30,10 +30,26 @@ class ContactController extends Controller
         return redirect('./')->with('success', 'Your message has been sent successfully!');
     }
 
-   public function doubt()
+    public function doubt(Request $request)
 {
-    $queries = contacts::latest()->get();
+    $query = Contacts::query();
+
+    if ($request->filled('search')) {
+        $query->where(function ($q) use ($request) {
+            $q->where('name', 'like', '%' . $request->search . '%')
+              ->orWhere('email', 'like', '%' . $request->search . '%')
+              ->orWhere('subject', 'like', '%' . $request->search . '%');
+        });
+    }
+
+    if ($request->filled('date')) {
+        $query->whereDate('created_at', $request->date);
+    }
+
+    $queries = $query->latest()->get();
 
     return view('teacher.doubt', compact('queries'));
 }
+
+
 }

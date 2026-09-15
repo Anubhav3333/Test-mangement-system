@@ -55,25 +55,18 @@ class TestAttempt extends Model
         return $this->answers()->where('is_correct', 1);
     }
 
-    /**
-     * Get only incorrect answers
-     */
+   
     public function incorrectAnswers()
     {
         return $this->answers()->where('is_correct', 0);
     }
 
-    /**
-     * Get only unanswered questions
-     */
+   
     public function unansweredQuestions()
     {
         return $this->answers()->where('is_answered', 0);
     }
 
-    /**
-     * Check if quiz is still active
-     */
     public function isActive(): bool
     {
         return $this->status === 'IN_PROGRESS' &&

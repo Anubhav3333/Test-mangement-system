@@ -1,13 +1,13 @@
 @extends('layouts.dashboard')
 
 <div class="container-fluid py-4">
-
-
+    
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h3 class="fw-bold mb-1">
                 <i class="bi bi-chat-left-text me-2"></i>Submitted Queries
             </h3>
+            
             <p class="text-muted mb-0">
                 View all questions and queries submitted by users.
             </p>
@@ -18,7 +18,69 @@
         </span>
     </div>
 
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
 
+        <form method="GET" action="{{ url()->current() }}">
+
+            <div class="row g-3 align-items-end">
+
+                <div class="col-md-6 col-lg-5">
+                    <label class="form-label fw-semibold">
+                        Search Query
+                    </label>
+
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-search"></i>
+                        </span>
+
+                        <input
+                            type="text"
+                            name="search"
+                            class="form-control"
+                            placeholder="Name, email or subject..."
+                            value="{{ request('search') }}"
+                        >
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-lg-3">
+                    <label class="form-label fw-semibold">
+                        Date
+                    </label>
+
+                    <input
+                        type="date"
+                        name="date"
+                        class="form-control"
+                        value="{{ request('date') }}"
+                    >
+                </div>
+
+                <div class="col-md-2 col-lg-2 d-flex gap-2">
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-funnel me-1"></i>
+                        Filter
+                    </button>
+
+                </div>
+
+                <div class="col-md-2 col-lg-2">
+                    <a href="{{ url()->current() }}"
+                       class="btn btn-outline-secondary w-100">
+                        <i class="bi bi-arrow-clockwise me-1"></i>
+                        Reset
+                    </a>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
   
     <div class="row g-4">
 

@@ -304,7 +304,8 @@
                         </span>
                     </div>
 
-                    <div class="selected-answer">
+                    <div class="sel
+                    ected-answer">
                         <span class="answer-label">
                             Student selected
                         </span>
